@@ -83,7 +83,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btnAgregarCategoria" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnLimpiarCamposCat" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="btnLimpiarCampos" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -108,7 +108,7 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnLimpiarCamposCat" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                              <Component id="btnLimpiarCampos" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                               <Component id="btnAgregarCategoria" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -158,7 +158,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btnLimpiarCamposCat">
+        <Component class="javax.swing.JButton" name="btnLimpiarCampos">
           <Properties>
             <Property name="text" type="java.lang.String" value="Limpiar"/>
           </Properties>

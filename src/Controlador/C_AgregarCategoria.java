@@ -77,6 +77,14 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarProducto.btnAgregarCategoria.setActionCommand("AgregarCategoria");
         vAgregarProducto.btnAgregarCategoria.addActionListener(this);
 
+        vAgregarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
+        vAgregarProducto.btnLimpiarCampos.addActionListener(this);
+
+        vAgregarProducto.btnGuardar.setEnabled(false);
+
+        vAgregarProducto.btnCancelar.setActionCommand("btnCancelar");
+        vAgregarProducto.btnCancelar.addActionListener(this);
+
         // Para el doble click en la tabla
         vAgregarProducto.tblCategoriasAgregadas.addMouseListener(new MouseAdapter() {
             @Override
@@ -92,6 +100,11 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                         DefaultTableModel model = (DefaultTableModel) vAgregarProducto.tblCategoriasAgregadas.getModel();
                         model.removeRow(fila);
                     }
+                }
+
+                // 👉 Si ya no quedan filas, deshabilita Guardar
+                if (vAgregarProducto.tblCategoriasAgregadas.getRowCount() == 0) {
+                    vAgregarProducto.btnGuardar.setEnabled(false);
                 }
             }
         });
@@ -134,6 +147,12 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 System.out.println("Agregar producto");
                 this.agregarCategoriaATabla();
             }
+            case "limpiarCampos" -> {
+                this.limpiarCampos();
+            }
+            case "btnCancelar" -> {
+                this.cancelarPantalla();
+            }
             default ->
                 throw new AssertionError();
         }
@@ -154,8 +173,29 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
 
         DefaultTableModel model = (DefaultTableModel) vAgregarProducto.tblCategoriasAgregadas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
+        this.limpiarCampos();
+        if (model.getRowCount() > 0) {
+            vAgregarProducto.btnGuardar.setEnabled(true);
+        }
+    }
+
+    private void limpiarCampos() {
         vAgregarProducto.txtNombreCategoria.setText("");
         vAgregarProducto.txtDescripcion.setText("");
     }
 
+    private void cancelarPantalla() {
+        int opcion = JOptionPane.showConfirmDialog(
+                vAgregarProducto,
+                "¿Estás seguro de que deseas cancelar y cerrar esta ventana?",
+                "Confirmar cancelación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            vAgregarProducto.dispose();
+            C_AgregarCategoria.vAgregarProducto = null;
+        }
+    }
 }
