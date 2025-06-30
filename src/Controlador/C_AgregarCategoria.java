@@ -4,13 +4,16 @@
  */
 package Controlador;
 
+import Modelo.M_ConexionBD;
 import Vista.V_AgregarCategoria;
 import Vista.V_Main;
+import java.sql.Connection;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameEvent;
@@ -81,6 +84,8 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarProducto.btnLimpiarCampos.addActionListener(this);
 
         vAgregarProducto.btnGuardar.setEnabled(false);
+        vAgregarProducto.btnGuardar.setActionCommand("btnGuardar");
+        vAgregarProducto.btnGuardar.addActionListener(this);
 
         vAgregarProducto.btnCancelar.setActionCommand("btnCancelar");
         vAgregarProducto.btnCancelar.addActionListener(this);
@@ -153,6 +158,9 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             case "btnCancelar" -> {
                 this.cancelarPantalla();
             }
+            case "btnGuardar" -> {
+                this.guardarCategoria();
+            }
             default ->
                 throw new AssertionError();
         }
@@ -196,6 +204,19 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         if (opcion == JOptionPane.YES_OPTION) {
             vAgregarProducto.dispose();
             C_AgregarCategoria.vAgregarProducto = null;
+        }
+    }
+
+    private void guardarCategoria() {
+        try {
+            Connection con = M_ConexionBD.getConexion();
+            if (con != null && con.isValid(2)) {  // 2 segundos de timeout
+                System.out.println("✅ Conexión correcta");
+            } else {
+                System.out.println("❌ Conexión fallida");
+            }
+        } catch (SQLException ex) {
+            System.getLogger(C_AgregarCategoria.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 }
