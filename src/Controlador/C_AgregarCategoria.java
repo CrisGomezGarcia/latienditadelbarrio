@@ -4,9 +4,9 @@
  */
 package Controlador;
 
-import Modelo.DAO.DAO_Categorias;
+import Modelo.DAO.DAO_Categoria;
 import Modelo.M_ConexionBD;
-import Modelo.VO.VO_Categorias;
+import Modelo.VO.VO_Categoria;
 import Vista.V_AgregarCategoria;
 import Vista.V_Main;
 import java.sql.Connection;
@@ -36,7 +36,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     int locationWidth, locationHeight;
     private V_Main vMain = null;
 
-    private final String titulo = "Categorías | Agregar Categoría";
+    private final String titulo = "Catálogos | Categorías | Agregar categoría";
 
     private static V_AgregarCategoria vAgregarCategoria = null;
 
@@ -62,7 +62,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     }
 
     private void cargarEstructuraTabla() {
-        String[] columnas = {"NOMBRE", "DESCRIPCION"};
+        String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -77,6 +77,8 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setMinWidth(150);
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setResizable(false);
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
+        
+        vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
     }
 
     private void setActionsListenerAFormulario() {
@@ -126,12 +128,12 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             }
         });
 
-//        vAgregarCategoria.txtDescripcion.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                agregarCategoriaATabla();
-//            }
-//        });
+        vAgregarCategoria.txtDescripcion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarCategoriaATabla();
+            }
+        });
     }
 
     @Override
@@ -201,13 +203,11 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         DefaultTableModel model = (DefaultTableModel) vAgregarCategoria.tblCategoriasAgregadas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
         
-        this.limpiarCampos();
-        
         if (model.getRowCount() > 0) {
             vAgregarCategoria.btnGuardar.setEnabled(true);
         }
         
-        vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
+        this.limpiarCampos();
     }
 
     private void limpiarCampos() {
@@ -235,7 +235,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         JTable tabla = vAgregarCategoria.tblCategoriasAgregadas;
 
         int totalFilas = tabla.getRowCount();
-        List<VO_Categorias> listaCategorias = new ArrayList<>();
+        List<VO_Categoria> listaCategorias = new ArrayList<>();
         if (totalFilas == 0) {
             return;
         }
@@ -243,7 +243,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             String nombre = tabla.getValueAt(i, 0).toString();
             String descripcion = tabla.getValueAt(i, 1).toString();
 
-            VO_Categorias vo = new VO_Categorias();
+            VO_Categoria vo = new VO_Categoria();
             vo.setNombre(nombre);
             vo.setDescripcion(descripcion);
 
@@ -251,7 +251,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         }
 
         try (Connection con = M_ConexionBD.getConexion()) {
-            DAO_Categorias dao = new DAO_Categorias(con);
+            DAO_Categoria dao = new DAO_Categoria(con);
 
             boolean exito = dao.guardar(listaCategorias);
 

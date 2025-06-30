@@ -8,19 +8,24 @@ package Modelo.VO;
  *
  * @author Cristian Gomez
  */
-public class VO_Categorias {
-    
+public class VO_Categoria {
+
     private int id;
     private String nombre;
     private String descripcion;
 
-    public VO_Categorias() {
+    public VO_Categoria() {
     }
 
-    public VO_Categorias(int id, String nombre, String descripcion) {
+    public VO_Categoria(int id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
+    }
+
+    public VO_Categoria(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     /**
@@ -64,13 +69,14 @@ public class VO_Categorias {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     @Override
     public String toString() {
-        return "VO_Categoria{" +
-               "id=" + id +
-               ", nombre='" + nombre + '\'' +
-               ", descripcion='" + descripcion + '\'' +
-               '}';
+//        return "VO_Categoria{" +
+//               "id=" + id +
+//               ", nombre='" + nombre + '\'' +
+//               ", descripcion='" + descripcion + '\'' +
+//               '}';
+        return nombre;
     }
 }
