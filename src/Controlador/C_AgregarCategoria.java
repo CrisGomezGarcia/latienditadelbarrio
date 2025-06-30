@@ -4,13 +4,16 @@
  */
 package Controlador;
 
+import Modelo.M_ConexionBD;
 import Vista.V_AgregarCategoria;
 import Vista.V_Main;
+import java.sql.Connection;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameEvent;
@@ -77,6 +80,16 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarProducto.btnAgregarCategoria.setActionCommand("AgregarCategoria");
         vAgregarProducto.btnAgregarCategoria.addActionListener(this);
 
+        vAgregarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
+        vAgregarProducto.btnLimpiarCampos.addActionListener(this);
+
+        vAgregarProducto.btnGuardar.setEnabled(false);
+        vAgregarProducto.btnGuardar.setActionCommand("btnGuardar");
+        vAgregarProducto.btnGuardar.addActionListener(this);
+
+        vAgregarProducto.btnCancelar.setActionCommand("btnCancelar");
+        vAgregarProducto.btnCancelar.addActionListener(this);
+
         // Para el doble click en la tabla
         vAgregarProducto.tblCategoriasAgregadas.addMouseListener(new MouseAdapter() {
             @Override
@@ -92,6 +105,11 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                         DefaultTableModel model = (DefaultTableModel) vAgregarProducto.tblCategoriasAgregadas.getModel();
                         model.removeRow(fila);
                     }
+                }
+
+                // 👉 Si ya no quedan filas, deshabilita Guardar
+                if (vAgregarProducto.tblCategoriasAgregadas.getRowCount() == 0) {
+                    vAgregarProducto.btnGuardar.setEnabled(false);
                 }
             }
         });
@@ -134,6 +152,15 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 System.out.println("Agregar producto");
                 this.agregarCategoriaATabla();
             }
+            case "limpiarCampos" -> {
+                this.limpiarCampos();
+            }
+            case "btnCancelar" -> {
+                this.cancelarPantalla();
+            }
+            case "btnGuardar" -> {
+                this.guardarCategoria();
+            }
             default ->
                 throw new AssertionError();
         }
@@ -154,8 +181,42 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
 
         DefaultTableModel model = (DefaultTableModel) vAgregarProducto.tblCategoriasAgregadas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
+        this.limpiarCampos();
+        if (model.getRowCount() > 0) {
+            vAgregarProducto.btnGuardar.setEnabled(true);
+        }
+    }
+
+    private void limpiarCampos() {
         vAgregarProducto.txtNombreCategoria.setText("");
         vAgregarProducto.txtDescripcion.setText("");
     }
 
+    private void cancelarPantalla() {
+        int opcion = JOptionPane.showConfirmDialog(
+                vAgregarProducto,
+                "¿Estás seguro de que deseas cancelar y cerrar esta ventana?",
+                "Confirmar cancelación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            vAgregarProducto.dispose();
+            C_AgregarCategoria.vAgregarProducto = null;
+        }
+    }
+
+    private void guardarCategoria() {
+        try {
+            Connection con = M_ConexionBD.getConexion();
+            if (con != null && con.isValid(2)) {  // 2 segundos de timeout
+                System.out.println("✅ Conexión correcta");
+            } else {
+                System.out.println("❌ Conexión fallida");
+            }
+        } catch (SQLException ex) {
+            System.getLogger(C_AgregarCategoria.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
 }

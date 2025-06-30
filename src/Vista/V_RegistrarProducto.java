@@ -4,7 +4,7 @@
  */
 package Vista;
 
-import Controlador.C_ConexionBD;
+import Modelo.M_ConexionBD;
 
 /**
  *
