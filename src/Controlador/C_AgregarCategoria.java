@@ -118,6 +118,20 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 }
             }
         });
+
+        vAgregarCategoria.txtNombreCategoria.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vAgregarCategoria.txtDescripcion.requestFocusInWindow();
+            }
+        });
+
+//        vAgregarCategoria.txtDescripcion.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                agregarCategoriaATabla();
+//            }
+//        });
     }
 
     @Override
@@ -154,7 +168,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         String clickName = e.getActionCommand();
         switch (clickName) {
             case "AgregarCategoria" -> {
-                System.out.println("Agregar producto");
                 this.agregarCategoriaATabla();
             }
             case "limpiarCampos" -> {
@@ -181,20 +194,26 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                     "El nombre de la categoría es obligatorio.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
+            vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
             return;
         }
 
         DefaultTableModel model = (DefaultTableModel) vAgregarCategoria.tblCategoriasAgregadas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
+        
         this.limpiarCampos();
+        
         if (model.getRowCount() > 0) {
             vAgregarCategoria.btnGuardar.setEnabled(true);
         }
+        
+        vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
     }
 
     private void limpiarCampos() {
         vAgregarCategoria.txtNombreCategoria.setText("");
         vAgregarCategoria.txtDescripcion.setText("");
+        vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
     }
 
     private void cancelarPantalla() {
@@ -266,5 +285,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                     JOptionPane.ERROR_MESSAGE
             );
         }
+        vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
     }
 }

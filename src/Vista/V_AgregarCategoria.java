@@ -51,11 +51,11 @@ public class V_AgregarCategoria extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel1.setText("Registrar Categoría");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(6, 6, 156, 21);
+        jLabel1.setBounds(10, 10, 156, 21);
 
         jLabel2.setText("<html>En esta pantalla puedes registrar una nueva categoría para tus productos.</html>");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(10, 30, 800, 32);
+        jLabel2.setBounds(10, 30, 800, 20);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la categoría"));
 
