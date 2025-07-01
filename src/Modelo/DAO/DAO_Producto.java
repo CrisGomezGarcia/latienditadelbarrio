@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo.VO;
+package Modelo.DAO;
 
 /**
  *
  * @author Cristian Gomez
  */
-public class VO_Categorias {
+public class DAO_Producto {
     
 }
