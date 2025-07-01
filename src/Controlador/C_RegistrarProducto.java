@@ -5,8 +5,10 @@
 package Controlador;
 
 import Modelo.DAO.DAO_Categoria;
+import Modelo.DAO.DAO_Marca;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Categoria;
+import Modelo.VO.VO_Marca;
 import Vista.V_Main;
 import Vista.V_RegistrarProducto;
 import ca.odell.glazedlists.BasicEventList;
@@ -52,6 +54,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             cargarFormulario();
             cargarEstructuraTabla();
             cargarCategoriasCombo();
+            cargarMarcasCombo();
         }
 
     }
@@ -64,7 +67,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vMain.desktop.add(vRegistrarProducto);
         vRegistrarProducto.setTitle(titulo);
         vRegistrarProducto.addInternalFrameListener(this);
-        
+
         vRegistrarProducto.txtPrecioSugerido.setText("0");
         vRegistrarProducto.txtExistencia.setText("0");
 
@@ -73,20 +76,20 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
         vRegistrarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
         vRegistrarProducto.btnLimpiarCampos.addActionListener(this);
-        
+
         vRegistrarProducto.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarProducto.btnCancelar.addActionListener(this);
-        
+
         vRegistrarProducto.btnGuardar.setEnabled(false);
 
         listenersParaControlesYTablas();
-        
+
         vRegistrarProducto.toFront();
         vRegistrarProducto.show();
     }
 
     private void cargarEstructuraTabla() {
-        String[] columnas = {"Nombre", "Descripción", "Categoria", "Código de barras", "Precio Sugerido", "Existencia"};
+        String[] columnas = {"Nombre", "Marca", "Presentación", "Categoria", "Código de barras", "Precio Sugerido", "Existencia"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -101,21 +104,22 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(0).setMinWidth(150);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(0).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
-        
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setMaxWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setMinWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
 
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setMaxWidth(100);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setMinWidth(100);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
 
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(4).setCellRenderer(tableCellRenderer);
-        
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setMaxWidth(65);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setMinWidth(65);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMaxWidth(65);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMinWidth(65);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setResizable(false);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setCellRenderer(tableCellRenderer);
     }
 
     @Override
@@ -170,7 +174,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             Connection con = M_ConexionBD.getConexion();
 
             DAO_Categoria dao = new DAO_Categoria(con);
-            List<VO_Categoria> listaCategorias = dao.obtenerCategorias();
+            List<VO_Categoria> listaCategorias = dao.obtenerCategoriasParaCombobox();
 
             EventList<VO_Categoria> categoriasEventList = new BasicEventList<>();
             categoriasEventList.addAll(listaCategorias);
@@ -199,21 +203,62 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         }
     }
 
+    private void cargarMarcasCombo() {
+        try {
+            Connection con = M_ConexionBD.getConexion();
+
+            DAO_Marca dao = new DAO_Marca(con);
+            List<VO_Marca> listaMarcas = dao.obtenerMarcasParaCombobox();
+
+            EventList<VO_Marca> marcasEventList = new BasicEventList<>();
+            marcasEventList.addAll(listaMarcas);
+
+            EventComboBoxModel<VO_Marca> model = new EventComboBoxModel<>(marcasEventList);
+            vRegistrarProducto.cboMarcas.setModel(model);
+
+            vRegistrarProducto.cboMarcas.setRenderer(new DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(
+                        JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    if (value instanceof VO_Marca) {
+                        setText(((VO_Marca) value).getNombre());
+                    }
+                    return this;
+                }
+            });
+
+            AutoCompleteSupport support = AutoCompleteSupport.install(vRegistrarProducto.cboMarcas, marcasEventList);
+            support.setStrict(true);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error cargando marcas: " + e.getMessage());
+        }
+    }
+
     private void agregarProductoATabla() {
         String nombre = vRegistrarProducto.txtNombre.getText();
-        String descripcion = vRegistrarProducto.txtDescripcion.getText();
+        String presentacion = vRegistrarProducto.txtPresentacion.getText();
         String codigoBarras = vRegistrarProducto.txtCodigoBarras.getText();
-        float precio = Float.parseFloat(vRegistrarProducto.txtPrecioSugerido.getText());
+        float precioSugerido = Float.parseFloat(vRegistrarProducto.txtPrecioSugerido.getText());
         int existencia = Integer.parseInt(vRegistrarProducto.txtExistencia.getText());
 
         Object categoriaSeleccionada = vRegistrarProducto.cboCategorias.getSelectedItem();
+        Object marcaSeleccionada = vRegistrarProducto.cboMarcas.getSelectedItem();
 
+        if (!(marcaSeleccionada instanceof VO_Marca)) {
+            JOptionPane.showMessageDialog(vRegistrarProducto, "Selecciona una marca válida");
+            return;
+        }
+        VO_Marca marca = (VO_Marca) marcaSeleccionada;
+        
         if (!(categoriaSeleccionada instanceof VO_Categoria)) {
             JOptionPane.showMessageDialog(vRegistrarProducto, "Selecciona una categoría válida");
             return;
         }
         VO_Categoria categoria = (VO_Categoria) categoriaSeleccionada;
-        
+
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "El nombre del producto es obligatorio.",
@@ -223,6 +268,15 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             return;
         }
         
+        if (presentacion.isEmpty()) {
+            JOptionPane.showMessageDialog(vRegistrarProducto,
+                    "La presentación del producto es obligatorio.",
+                    "Validación",
+                    JOptionPane.WARNING_MESSAGE);
+            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            return;
+        }
+
         if (categoria == null) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "La categoría del producto es obligatorio.",
@@ -231,7 +285,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.txtNombre.requestFocusInWindow();
             return;
         }
-        
+
         if (codigoBarras.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "El código de barras del producto es obligatorio.",
@@ -240,8 +294,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.txtNombre.requestFocusInWindow();
             return;
         }
-        
-        if (precio == 0) {
+
+        if (precioSugerido == 0) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "El precio del producto es obligatorio.",
                     "Validación",
@@ -249,16 +303,16 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.txtNombre.requestFocusInWindow();
             return;
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
-        model.addRow(new Object[]{ nombre, descripcion, categoria.getNombre(), codigoBarras, precio, existencia });
-        
+        model.addRow(new Object[]{nombre, marca.getNombre(), presentacion, categoria.getNombre(), codigoBarras, precioSugerido, existencia});
+
         this.limpiarCampos();
-        
+
         if (model.getRowCount() > 0) {
             vRegistrarProducto.btnGuardar.setEnabled(true);
         }
-        
+
     }
 
     private void cancelarPantalla() {
@@ -274,36 +328,36 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             C_RegistrarProducto.vRegistrarProducto = null;
         }
     }
-    
+
     private void listenersParaControlesYTablas() {
         vRegistrarProducto.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                
+
                 // Permitir solo digitos, backspace y punto
                 if (!Character.isDigit(c) && c != '.' && c != '\b') {
                     evt.consume();
                 }
-                
+
                 if (c == '.' && vRegistrarProducto.txtPrecioSugerido.getText().contains(".")) {
                     evt.consume();
                 }
             }
         });
-        
+
         vRegistrarProducto.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 char c = evt.getKeyChar();
-                
+
                 // Permitir solo digitos, backspace y punto
                 if (!Character.isDigit(c) && c != '\b') {
                     evt.consume();
                 }
             }
         });
-        
+
         vRegistrarProducto.tblProductosAgregados.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -330,12 +384,12 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
     private void limpiarCampos() {
         vRegistrarProducto.txtNombre.setText("");
-        vRegistrarProducto.txtDescripcion.setText("");
+        vRegistrarProducto.txtPresentacion.setText("");
         vRegistrarProducto.txtCodigoBarras.setText("");
         vRegistrarProducto.txtPrecioSugerido.setText("0");
         vRegistrarProducto.txtExistencia.setText("0");
         vRegistrarProducto.txtNombre.requestFocusInWindow();
-        
+
     }
-    
+
 }

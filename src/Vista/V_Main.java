@@ -38,6 +38,9 @@ public class V_Main extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         menuAgregarCategoria = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        menuRegistrarMarca = new javax.swing.JMenuItem();
+        menuConsultarEditarMarca = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menuRegistrarProducto = new javax.swing.JMenuItem();
         menuConsultarProducto = new javax.swing.JMenuItem();
@@ -85,6 +88,16 @@ public class V_Main extends javax.swing.JFrame {
         jMenu3.add(jMenuItem4);
 
         jMenu4.add(jMenu3);
+
+        jMenu6.setText("Marcas");
+
+        menuRegistrarMarca.setText("Registrar marca");
+        jMenu6.add(menuRegistrarMarca);
+
+        menuConsultarEditarMarca.setText("Consultar / Editar marca");
+        jMenu6.add(menuConsultarEditarMarca);
+
+        jMenu4.add(jMenu6);
 
         jMenu5.setText("Productos");
 
@@ -173,6 +186,7 @@ public class V_Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -180,10 +194,12 @@ public class V_Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     public javax.swing.JMenuItem menuAgregarCategoria;
     public javax.swing.JMenuItem menuConsultarCompras;
+    public javax.swing.JMenuItem menuConsultarEditarMarca;
     public javax.swing.JMenuItem menuConsultarProducto;
     public javax.swing.JMenuItem menuConsultarVentas;
     public javax.swing.JMenuItem menuNuevaVenta;
     public javax.swing.JMenuItem menuRegistrarCompra;
+    public javax.swing.JMenuItem menuRegistrarMarca;
     public javax.swing.JMenuItem menuRegistrarProducto;
     // End of variables declaration//GEN-END:variables
 }

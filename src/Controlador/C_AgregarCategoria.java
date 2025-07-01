@@ -84,10 +84,10 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     private void setActionsListenerAFormulario() {
         vAgregarCategoria.addInternalFrameListener(this);
 
-        vAgregarCategoria.btnAgregarCategoria.setActionCommand("AgregarCategoria");
+        vAgregarCategoria.btnAgregarCategoria.setActionCommand("btnAgregarCategoria");
         vAgregarCategoria.btnAgregarCategoria.addActionListener(this);
 
-        vAgregarCategoria.btnLimpiarCampos.setActionCommand("limpiarCampos");
+        vAgregarCategoria.btnLimpiarCampos.setActionCommand("btnLimpiarCampos");
         vAgregarCategoria.btnLimpiarCampos.addActionListener(this);
 
         vAgregarCategoria.btnGuardar.setEnabled(false);
@@ -169,10 +169,10 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     public void actionPerformed(ActionEvent e) {
         String clickName = e.getActionCommand();
         switch (clickName) {
-            case "AgregarCategoria" -> {
+            case "btnAgregarCategoria" -> {
                 this.agregarCategoriaATabla();
             }
-            case "limpiarCampos" -> {
+            case "btnLimpiarCampos" -> {
                 this.limpiarCampos();
             }
             case "btnCancelar" -> {
@@ -188,8 +188,8 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     }
 
     private void agregarCategoriaATabla() {
-        String nombre = vAgregarCategoria.txtNombreCategoria.getText().toString().trim();
-        String descripcion = vAgregarCategoria.txtDescripcion.getText().toString().trim();
+        String nombre = vAgregarCategoria.txtNombreCategoria.getText().trim();
+        String descripcion = vAgregarCategoria.txtDescripcion.getText().trim();
 
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(vAgregarCategoria,

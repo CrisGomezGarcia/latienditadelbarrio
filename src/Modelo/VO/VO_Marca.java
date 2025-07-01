@@ -1,34 +1,37 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Modelo.VO;
 
 import java.time.LocalDate;
 
 /**
+ *
  * @author Cristian Gomez
  */
-public class VO_Categoria {
-
+public class VO_Marca {
     private int id;
     private String nombre;
     private String descripcion;
     private int estado; // o boolean
     private LocalDate createdAt;
-
-    public VO_Categoria() {
-    }
-
-    public VO_Categoria(int id, String nombre, String descripcion, int estado, LocalDate createdAt) {
+    
+    public VO_Marca() {}
+    
+    public VO_Marca(int id, String nombre, String descripcion, int estado, LocalDate createdAt) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.estado = estado;
         this.createdAt = createdAt;
     }
-
-    public VO_Categoria(int id, String nombre) {
+    
+    public VO_Marca(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -73,4 +76,5 @@ public class VO_Categoria {
     public String toString() {
         return nombre;
     }
+    
 }

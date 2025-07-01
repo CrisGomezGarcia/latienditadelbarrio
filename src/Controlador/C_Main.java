@@ -43,6 +43,9 @@ public class C_Main implements ActionListener {
             case "agregarCategoría" -> {
                 new C_AgregarCategoria(this.vMain);
             }
+            case "agregarUnidadMedida" -> {
+                new C_RegistrarMarca(this.vMain);
+            }
             default -> throw new AssertionError();
         }
     }
@@ -53,5 +56,8 @@ public class C_Main implements ActionListener {
         
         this.vMain.menuAgregarCategoria.setActionCommand("agregarCategoría");
         this.vMain.menuAgregarCategoria.addActionListener(this);
+        
+        this.vMain.menuRegistrarMarca.setActionCommand("agregarUnidadMedida");
+        this.vMain.menuRegistrarMarca.addActionListener(this);
     }
 }
