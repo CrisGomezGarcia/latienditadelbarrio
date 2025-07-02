@@ -28,7 +28,11 @@ public class DAO_Producto {
             for (VO_Producto producto : listaProductos) {
                 ps.setString(1, producto.getNombre());
                 ps.setString(2, producto.getTipoPresentacion());
-                ps.setString(3, producto.getCodigoBarras());
+                if (producto.getCodigoBarras() == null || producto.getCodigoBarras().trim().isEmpty()) {
+                    ps.setNull(3, java.sql.Types.VARCHAR);
+                } else {
+                    ps.setString(3, producto.getCodigoBarras());
+                }
                 ps.setDouble(4, producto.getPrecioSugerido());
                 ps.setInt(5, producto.getStock());
                 ps.setInt(6, producto.getIdCategoria());

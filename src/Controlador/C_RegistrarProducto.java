@@ -418,14 +418,14 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             return;
         }
 
-        if (codigoBarras.isEmpty()) {
-            JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "El código de barras del producto es obligatorio.",
-                    "Validación",
-                    JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
-            return;
-        }
+//        if (codigoBarras.isEmpty()) {
+//            JOptionPane.showMessageDialog(vRegistrarProducto,
+//                    "El código de barras del producto es obligatorio.",
+//                    "Validación",
+//                    JOptionPane.WARNING_MESSAGE);
+//            vRegistrarProducto.txtNombre.requestFocusInWindow();
+//            return;
+//        }
 
         if (precioSugerido == 0) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
