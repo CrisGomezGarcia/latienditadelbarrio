@@ -46,10 +46,12 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             this.vMain = vMain;
             cargarFormulario();
             cargarEstructuraTabla();
+            setListenersParaControlesTablasBotones();
         }
     }
 
     public void cargarFormulario() {
+        vAgregarCategoria.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vAgregarCategoria.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
         locationHeight = ((vMain.desktop.getSize().height - frameSize.height) / 2);
@@ -77,17 +79,17 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setMinWidth(150);
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setResizable(false);
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
-        
+
         vAgregarCategoria.tblCategoriasAgregadas.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
     }
 
     private void setActionsListenerAFormulario() {
         vAgregarCategoria.addInternalFrameListener(this);
 
-        vAgregarCategoria.btnAgregarCategoria.setActionCommand("AgregarCategoria");
+        vAgregarCategoria.btnAgregarCategoria.setActionCommand("btnAgregarCategoria");
         vAgregarCategoria.btnAgregarCategoria.addActionListener(this);
 
-        vAgregarCategoria.btnLimpiarCampos.setActionCommand("limpiarCampos");
+        vAgregarCategoria.btnLimpiarCampos.setActionCommand("btnLimpiarCampos");
         vAgregarCategoria.btnLimpiarCampos.addActionListener(this);
 
         vAgregarCategoria.btnGuardar.setEnabled(false);
@@ -97,6 +99,24 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarCategoria.btnCancelar.setActionCommand("btnCancelar");
         vAgregarCategoria.btnCancelar.addActionListener(this);
 
+        // Configurar que ESC cierre el frame
+        vAgregarCategoria.getRootPane().getInputMap(
+                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+        ).put(
+                javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
+                "ESCAPE"
+        );
+
+        vAgregarCategoria.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                cancelarPantalla();
+            }
+        });
+        // -> Fin
+    }
+
+    private void setListenersParaControlesTablasBotones() {
         // Para el doble click en la tabla
         vAgregarCategoria.tblCategoriasAgregadas.addMouseListener(new MouseAdapter() {
             @Override
@@ -142,6 +162,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
+        cancelarPantalla();
     }
 
     @Override
@@ -169,10 +190,10 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     public void actionPerformed(ActionEvent e) {
         String clickName = e.getActionCommand();
         switch (clickName) {
-            case "AgregarCategoria" -> {
+            case "btnAgregarCategoria" -> {
                 this.agregarCategoriaATabla();
             }
-            case "limpiarCampos" -> {
+            case "btnLimpiarCampos" -> {
                 this.limpiarCampos();
             }
             case "btnCancelar" -> {
@@ -188,8 +209,8 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     }
 
     private void agregarCategoriaATabla() {
-        String nombre = vAgregarCategoria.txtNombreCategoria.getText().toString().trim();
-        String descripcion = vAgregarCategoria.txtDescripcion.getText().toString().trim();
+        String nombre = vAgregarCategoria.txtNombreCategoria.getText().trim();
+        String descripcion = vAgregarCategoria.txtDescripcion.getText().trim();
 
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(vAgregarCategoria,
@@ -202,11 +223,11 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
 
         DefaultTableModel model = (DefaultTableModel) vAgregarCategoria.tblCategoriasAgregadas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
-        
+
         if (model.getRowCount() > 0) {
             vAgregarCategoria.btnGuardar.setEnabled(true);
         }
-        
+
         this.limpiarCampos();
     }
 

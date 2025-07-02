@@ -25,7 +25,7 @@ public class DAO_Categoria {
     }
 
     public boolean guardar(List<VO_Categoria> listaCategorias) {
-        String sql = "INSERT INTO tbl_categorias(nombre, descripcion) VALUES(?, ?)";
+        String sql = "INSERT INTO tbl_categorias(nombre, descripcion) VALUES(?, ?);";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             for (VO_Categoria cat : listaCategorias) {
                 ps.setString(1, cat.getNombre());
@@ -44,9 +44,23 @@ public class DAO_Categoria {
         }
     }
     
-    public List<VO_Categoria> obtenerCategorias() throws SQLException {
+    public List<VO_Categoria> obtenerCategoriasParaCombobox() throws SQLException {
         List<VO_Categoria> listaCategorias = new ArrayList<>();
-        String sql = "SELECT id, nombre FROM tbl_categorias";
+        String sql = "SELECT id, nombre FROM tbl_categorias WHERE estado = 1;";
+        try(PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                listaCategorias.add(new VO_Categoria(id, nombre));
+            }
+        }
+        return listaCategorias;
+    }
+    
+    public List<VO_Categoria> obtenerTodasLasCategorias() throws SQLException {
+        List<VO_Categoria> listaCategorias = new ArrayList<>();
+        String sql = "SELECT id, nombre, descripcion, estado, created_at FROM tbl_categorias;";
         try(PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
