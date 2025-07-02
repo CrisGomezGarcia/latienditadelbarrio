@@ -81,6 +81,7 @@ public class V_Main extends javax.swing.JFrame {
 
         jMenu3.setText("Categorías");
 
+        menuAgregarCategoria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         menuAgregarCategoria.setText("Agregar categoría");
         jMenu3.add(menuAgregarCategoria);
 
@@ -91,6 +92,7 @@ public class V_Main extends javax.swing.JFrame {
 
         jMenu6.setText("Marcas");
 
+        menuRegistrarMarca.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         menuRegistrarMarca.setText("Registrar marca");
         jMenu6.add(menuRegistrarMarca);
 
@@ -115,11 +117,9 @@ public class V_Main extends javax.swing.JFrame {
 
         jMenu1.setText("Ventas");
 
-        menuNuevaVenta.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         menuNuevaVenta.setText("Registrar nueva venta");
         jMenu1.add(menuNuevaVenta);
 
-        menuConsultarVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         menuConsultarVentas.setText("Consultar ventas");
         jMenu1.add(menuConsultarVentas);
 

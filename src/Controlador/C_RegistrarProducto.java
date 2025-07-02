@@ -53,37 +53,22 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             this.vMain = vMain;
             cargarFormulario();
             cargarEstructuraTabla();
+            setListenersParaControlesTablasBotones();
             cargarCategoriasCombo();
             cargarMarcasCombo();
         }
-
     }
 
     public void cargarFormulario() {
+        vRegistrarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vRegistrarProducto.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
         locationHeight = ((vMain.desktop.getSize().height - frameSize.height) / 2);
         vRegistrarProducto.setLocation(locationWidth, locationHeight);
         vMain.desktop.add(vRegistrarProducto);
         vRegistrarProducto.setTitle(titulo);
-        vRegistrarProducto.addInternalFrameListener(this);
-
-        vRegistrarProducto.txtPrecioSugerido.setText("0");
-        vRegistrarProducto.txtExistencia.setText("0");
-
-        vRegistrarProducto.btnAgregarProducto.setActionCommand("agregarProducto");
-        vRegistrarProducto.btnAgregarProducto.addActionListener(this);
-
-        vRegistrarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
-        vRegistrarProducto.btnLimpiarCampos.addActionListener(this);
-
-        vRegistrarProducto.btnCancelar.setActionCommand("btnCancelar");
-        vRegistrarProducto.btnCancelar.addActionListener(this);
-
+        setActionsListenerAFormulario();
         vRegistrarProducto.btnGuardar.setEnabled(false);
-
-        listenersParaControlesYTablas();
-
         vRegistrarProducto.toFront();
         vRegistrarProducto.show();
     }
@@ -122,12 +107,82 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setCellRenderer(tableCellRenderer);
     }
 
+    private void setActionsListenerAFormulario() {
+        vRegistrarProducto.addInternalFrameListener(this);
+
+        vRegistrarProducto.txtPrecioSugerido.setText("0");
+        vRegistrarProducto.txtExistencia.setText("0");
+
+        vRegistrarProducto.btnAgregarProducto.setActionCommand("agregarProducto");
+        vRegistrarProducto.btnAgregarProducto.addActionListener(this);
+
+        vRegistrarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
+        vRegistrarProducto.btnLimpiarCampos.addActionListener(this);
+
+        vRegistrarProducto.btnCancelar.setActionCommand("btnCancelar");
+        vRegistrarProducto.btnCancelar.addActionListener(this);
+    }
+
+    private void setListenersParaControlesTablasBotones() {
+        vRegistrarProducto.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '.' && c != '\b') {
+                    evt.consume();
+                }
+
+                if (c == '.' && vRegistrarProducto.txtPrecioSugerido.getText().contains(".")) {
+                    evt.consume();
+                }
+            }
+        });
+
+        vRegistrarProducto.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '\b') {
+                    evt.consume();
+                }
+            }
+        });
+
+        vRegistrarProducto.tblProductosAgregados.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int fila = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
+                    int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
+                            "¿Deseas eliminar esta categoría de la tabla?",
+                            "Confirmar eliminación",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (opcion == JOptionPane.YES_OPTION) {
+                        DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
+                        model.removeRow(fila);
+                    }
+                }
+
+                // 👉 Si ya no quedan filas, deshabilita Guardar
+                if (vRegistrarProducto.tblProductosAgregados.getRowCount() == 0) {
+                    vRegistrarProducto.btnGuardar.setEnabled(false);
+                }
+            }
+        });
+    }
+
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
     }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
+        cancelarPantalla();
     }
 
     @Override
@@ -169,6 +224,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         }
     }
 
+    // Métodos
     private void cargarCategoriasCombo() {
         try {
             Connection con = M_ConexionBD.getConexion();
@@ -252,7 +308,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             return;
         }
         VO_Marca marca = (VO_Marca) marcaSeleccionada;
-        
+
         if (!(categoriaSeleccionada instanceof VO_Categoria)) {
             JOptionPane.showMessageDialog(vRegistrarProducto, "Selecciona una categoría válida");
             return;
@@ -267,7 +323,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.txtNombre.requestFocusInWindow();
             return;
         }
-        
+
         if (presentacion.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "La presentación del producto es obligatorio.",
@@ -327,59 +383,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.dispose();
             C_RegistrarProducto.vRegistrarProducto = null;
         }
-    }
-
-    private void listenersParaControlesYTablas() {
-        vRegistrarProducto.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                char c = evt.getKeyChar();
-
-                // Permitir solo digitos, backspace y punto
-                if (!Character.isDigit(c) && c != '.' && c != '\b') {
-                    evt.consume();
-                }
-
-                if (c == '.' && vRegistrarProducto.txtPrecioSugerido.getText().contains(".")) {
-                    evt.consume();
-                }
-            }
-        });
-
-        vRegistrarProducto.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                char c = evt.getKeyChar();
-
-                // Permitir solo digitos, backspace y punto
-                if (!Character.isDigit(c) && c != '\b') {
-                    evt.consume();
-                }
-            }
-        });
-
-        vRegistrarProducto.tblProductosAgregados.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int fila = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
-                    int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
-                            "¿Deseas eliminar esta categoría de la tabla?",
-                            "Confirmar eliminación",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
-                        model.removeRow(fila);
-                    }
-                }
-
-                // 👉 Si ya no quedan filas, deshabilita Guardar
-                if (vRegistrarProducto.tblProductosAgregados.getRowCount() == 0) {
-                    vRegistrarProducto.btnGuardar.setEnabled(false);
-                }
-            }
-        });
     }
 
     private void limpiarCampos() {

@@ -31,6 +31,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuAgregarCategoria">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F1"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Agregar categor&#xed;a"/>
                   </Properties>
                   <AuxValues>
@@ -51,6 +54,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="menuRegistrarMarca">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F2"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Registrar marca"/>
                   </Properties>
                   <AuxValues>
@@ -105,9 +111,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuNuevaVenta">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="F1"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar nueva venta"/>
               </Properties>
               <AuxValues>
@@ -116,9 +119,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuConsultarVentas">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="F6"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Consultar ventas"/>
               </Properties>
               <AuxValues>

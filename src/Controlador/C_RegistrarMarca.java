@@ -31,24 +31,27 @@ import javax.swing.table.DefaultTableModel;
  * @author Cristian Gomez
  */
 public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
+
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
 
     private final String titulo = "Catálogos | Marcas | Registrar marca";
-    
+
     private static V_RegistrarMarca vRegistrarMarca = null;
-    
+
     public C_RegistrarMarca(V_Main vMain) {
         if (C_RegistrarMarca.vRegistrarMarca == null) {
             C_RegistrarMarca.vRegistrarMarca = new V_RegistrarMarca();
             this.vMain = vMain;
             cargarFormulario();
             cargarEstructuraTabla();
+            setListenersParaControlesTablasBotones();
         }
     }
 
     private void cargarFormulario() {
+        vRegistrarMarca.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vRegistrarMarca.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
         locationHeight = ((vMain.desktop.getSize().height - frameSize.height) / 2);
@@ -59,7 +62,7 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
         vRegistrarMarca.toFront();
         vRegistrarMarca.show();
     }
-    
+
     private void cargarEstructuraTabla() {
         String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
@@ -76,10 +79,10 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
         vRegistrarMarca.tblMarcas.getColumnModel().getColumn(0).setMinWidth(150);
         vRegistrarMarca.tblMarcas.getColumnModel().getColumn(0).setResizable(false);
         vRegistrarMarca.tblMarcas.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
-        
+
         vRegistrarMarca.tblMarcas.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
     }
-    
+
     private void setActionsListenerAFormulario() {
         vRegistrarMarca.addInternalFrameListener(this);
 
@@ -95,7 +98,9 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
 
         vRegistrarMarca.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarMarca.btnCancelar.addActionListener(this);
-        
+    }
+
+    private void setListenersParaControlesTablasBotones() {
         // Para el doble click en la tabla
         vRegistrarMarca.tblMarcas.addMouseListener(new MouseAdapter() {
             @Override
@@ -133,21 +138,20 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
                 agregarMarcaATabla();
             }
         });
-        
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String clickName = e.getActionCommand();
         switch (clickName) {
             case "btnAgregar" -> {
-                 this.agregarMarcaATabla();
+                this.agregarMarcaATabla();
             }
             case "btnLimpiarCampos" -> {
-                 this.limpiarCampos();
+                this.limpiarCampos();
             }
             case "btnCancelar" -> {
-                 this.cancelarPantalla();
+                this.cancelarPantalla();
             }
             case "btnGuardar" -> {
                 this.guardar();
@@ -163,6 +167,7 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
+        cancelarPantalla();
     }
 
     @Override
@@ -185,12 +190,12 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
     }
-    
+
     // Métodos
     private void agregarMarcaATabla() {
         String nombre = vRegistrarMarca.txtNombre.getText().trim();
         String descripcion = vRegistrarMarca.txtDescripcion.getText().trim();
-        
+
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarMarca,
                     "El nombre de la marca es obligatorio.",
@@ -199,23 +204,23 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             vRegistrarMarca.txtNombre.requestFocusInWindow();
             return;
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) vRegistrarMarca.tblMarcas.getModel();
         model.addRow(new Object[]{nombre, descripcion});
-        
+
         if (model.getRowCount() > 0) {
             vRegistrarMarca.btnGuardar.setEnabled(true);
         }
-        
+
         this.limpiarCampos();
     }
-    
+
     private void limpiarCampos() {
         vRegistrarMarca.txtNombre.setText("");
         vRegistrarMarca.txtDescripcion.setText("");
         vRegistrarMarca.txtNombre.requestFocusInWindow();
     }
-    
+
     private void cancelarPantalla() {
         int opcion = JOptionPane.showConfirmDialog(vRegistrarMarca,
                 "¿Estás seguro de que deseas cancelar y cerrar esta ventana?",
@@ -229,31 +234,31 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             C_RegistrarMarca.vRegistrarMarca = null;
         }
     }
-    
+
     private void guardar() {
         JTable tabla = vRegistrarMarca.tblMarcas;
-        
+
         int totalFilas = tabla.getRowCount();
         List<VO_Marca> listaMarca = new ArrayList<>();
         if (totalFilas == 0) {
             return;
         }
-        
+
         for (int i = 0; i < totalFilas; i++) {
             String nombre = tabla.getValueAt(i, 0).toString();
             String descripcion = tabla.getValueAt(i, 1).toString();
-            
+
             VO_Marca vo = new VO_Marca();
             vo.setNombre(nombre);
             vo.setDescripcion(descripcion);
-            
+
             listaMarca.add(vo);
         }
-        
+
         try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Marca dao = new DAO_Marca(con);
             boolean exito = dao.guardar(listaMarca);
-            
+
             if (exito) {
                 JOptionPane.showMessageDialog(vRegistrarMarca,
                         "✅ Marcas guardadas correctamente.",
