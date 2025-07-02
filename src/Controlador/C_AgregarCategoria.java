@@ -98,6 +98,22 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
 
         vAgregarCategoria.btnCancelar.setActionCommand("btnCancelar");
         vAgregarCategoria.btnCancelar.addActionListener(this);
+
+        // Configurar que ESC cierre el frame
+        vAgregarCategoria.getRootPane().getInputMap(
+                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+        ).put(
+                javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
+                "ESCAPE"
+        );
+
+        vAgregarCategoria.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                cancelarPantalla();
+            }
+        });
+        // -> Fin
     }
 
     private void setListenersParaControlesTablasBotones() {
@@ -138,23 +154,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 agregarCategoriaATabla();
             }
         });
-
-        // Configurar que ESC cierre el frame
-        vAgregarCategoria.getRootPane().getInputMap(
-                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
-        ).put(
-                javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
-                "ESCAPE"
-        );
-
-        vAgregarCategoria.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                cancelarPantalla();
-            }
-        });
-        // -> Fin
-
     }
 
     @Override

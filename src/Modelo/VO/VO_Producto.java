@@ -4,129 +4,135 @@
  */
 package Modelo.VO;
 
+import java.sql.Date;
+
 /**
  *
  * @author Cristian Gomez
  */
 public class VO_Producto {
+
     private int id;
     private String nombre;
-    private String descripcion;
+    private String tipoPresentacion;
     private String codigoBarras;
-    private float precio;
-    private VO_Categoria categoria;
-    private int existencia;
-    
-    public VO_Producto() {
-        
-    }
-    
-    public VO_Producto(int id, String nombre, String descripcion, String codigoBarras, float precio, VO_Categoria categoria, int existencia) {
+    private double precioSugerido;
+    private int stock;
+    private int idCategoria;
+    private int idMarca;
+    private int estado;
+    private Date createdAt;
+
+    public VO_Producto() { }
+
+    public VO_Producto(int id, String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca, int estado, Date createdAt) {
         this.id = id;
         this.nombre = nombre;
-        this.descripcion = descripcion;
+        this.tipoPresentacion = tipoPresentacion;
         this.codigoBarras = codigoBarras;
-        this.precio = precio;
-        this.categoria = categoria;
-        this.existencia = existencia;
+        this.precioSugerido = precioSugerido;
+        this.stock = stock;
+        this.idCategoria = idCategoria;
+        this.idMarca = idMarca;
+        this.estado = estado;
+        this.createdAt = createdAt;
     }
 
-    /**
-     * @return the id
-     */
+    // 👉 Constructor simplificado (sin ID y fecha)
+    public VO_Producto(String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca) {
+        this.nombre = nombre;
+        this.tipoPresentacion = tipoPresentacion;
+        this.codigoBarras = codigoBarras;
+        this.precioSugerido = precioSugerido;
+        this.stock = stock;
+        this.idCategoria = idCategoria;
+        this.idMarca = idMarca;
+    }
+
+    // Getters y Setters
     public int getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the descripcion
-     */
-    public String getDescripcion() {
-        return descripcion;
+    public String getTipoPresentacion() {
+        return tipoPresentacion;
     }
 
-    /**
-     * @param descripcion the descripcion to set
-     */
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setTipoPresentacion(String tipoPresentacion) {
+        this.tipoPresentacion = tipoPresentacion;
     }
 
-    /**
-     * @return the codigoBarras
-     */
     public String getCodigoBarras() {
         return codigoBarras;
     }
 
-    /**
-     * @param codigoBarras the codigoBarras to set
-     */
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
 
-    /**
-     * @return the precio
-     */
-    public float getPrecio() {
-        return precio;
+    public double getPrecioSugerido() {
+        return precioSugerido;
     }
 
-    /**
-     * @param precio the precio to set
-     */
-    public void setPrecio(float precio) {
-        this.precio = precio;
+    public void setPrecioSugerido(double precioSugerido) {
+        this.precioSugerido = precioSugerido;
     }
 
-    /**
-     * @return the categoria
-     */
-    public VO_Categoria getCategoria() {
-        return categoria;
-    }
-
-    /**
-     * @param categoria the categoria to set
-     */
-    public void setCategoria(VO_Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    /**
-     * @return the existencia
-     */
     public int getStock() {
-        return existencia;
+        return stock;
     }
 
-    /**
-     * @param stock the existencia to set
-     */
     public void setStock(int stock) {
-        this.existencia = stock;
+        this.stock = stock;
     }
-    
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public int getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(int idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " - " + tipoPresentacion;
+    }
+
 }

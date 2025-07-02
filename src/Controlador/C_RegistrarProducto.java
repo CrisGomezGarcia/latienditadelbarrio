@@ -6,9 +6,11 @@ package Controlador;
 
 import Modelo.DAO.DAO_Categoria;
 import Modelo.DAO.DAO_Marca;
+import Modelo.DAO.DAO_Producto;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Categoria;
 import Modelo.VO.VO_Marca;
+import Modelo.VO.VO_Producto;
 import Vista.V_Main;
 import Vista.V_RegistrarProducto;
 import ca.odell.glazedlists.BasicEventList;
@@ -23,15 +25,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -42,6 +47,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
+    private boolean cargandoComboMarcas = false;
+    private boolean cargandoComboCategorias = false;
 
     private final String titulo = "Catálogo | Productos | Registrar producto";
 
@@ -54,8 +61,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             cargarFormulario();
             cargarEstructuraTabla();
             setListenersParaControlesTablasBotones();
-            cargarCategoriasCombo();
             cargarMarcasCombo();
+            cargarCategoriasCombo();
         }
     }
 
@@ -74,7 +81,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
     }
 
     private void cargarEstructuraTabla() {
-        String[] columnas = {"Nombre", "Marca", "Presentación", "Categoria", "Código de barras", "Precio Sugerido", "Existencia"};
+        String[] columnas = {"Nombre", "ID Marca", "Marca", "Presentación", "ID Categoría", "Categoria", "Código de barras", "Precio Sugerido", "Existencia"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -90,21 +97,24 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(0).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
 
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setMaxWidth(100);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setMinWidth(100);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setResizable(false);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
-
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setMaxWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setMinWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
 
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(4).setCellRenderer(tableCellRenderer);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
 
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMaxWidth(65);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMinWidth(65);
-        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setResizable(false);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setCellRenderer(tableCellRenderer);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(7).setCellRenderer(tableCellRenderer);
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(8).setMaxWidth(65);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(8).setMinWidth(65);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(8).setResizable(false);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(8).setCellRenderer(tableCellRenderer);
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().removeColumn(vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(4));
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().removeColumn(vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(1));
     }
 
     private void setActionsListenerAFormulario() {
@@ -119,8 +129,27 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.btnLimpiarCampos.setActionCommand("limpiarCampos");
         vRegistrarProducto.btnLimpiarCampos.addActionListener(this);
 
+        vRegistrarProducto.btnGuardar.setActionCommand("btnGuardar");
+        vRegistrarProducto.btnGuardar.addActionListener(this);
+
         vRegistrarProducto.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarProducto.btnCancelar.addActionListener(this);
+
+        // Configurar que ESC cierre el frame
+        vRegistrarProducto.getRootPane().getInputMap(
+                javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+        ).put(
+                javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
+                "ESCAPE"
+        );
+
+        vRegistrarProducto.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                cancelarPantalla();
+            }
+        });
+        // -> Fin
     }
 
     private void setListenersParaControlesTablasBotones() {
@@ -174,6 +203,43 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 }
             }
         });
+
+        vRegistrarProducto.txtNombre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vRegistrarProducto.cboMarcas.requestFocusInWindow();
+            }
+        });
+
+        vRegistrarProducto.txtPresentacion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vRegistrarProducto.cboCategorias.requestFocusInWindow();
+
+            }
+        });
+
+        vRegistrarProducto.txtCodigoBarras.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vRegistrarProducto.txtPrecioSugerido.requestFocusInWindow();
+            }
+        });
+
+        vRegistrarProducto.txtPrecioSugerido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vRegistrarProducto.txtExistencia.requestFocusInWindow();
+            }
+        });
+
+        vRegistrarProducto.txtExistencia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarProductoATabla();
+            }
+        });
+
     }
 
     @Override
@@ -216,6 +282,9 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             case "limpiarCampos" -> {
                 this.limpiarCampos();
             }
+            case "btnGuardar" -> {
+                this.guardar();
+            }
             case "btnCancelar" -> {
                 this.cancelarPantalla();
             }
@@ -226,6 +295,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
     // Métodos
     private void cargarCategoriasCombo() {
+        cargandoComboCategorias = true;
         try {
             Connection con = M_ConexionBD.getConexion();
 
@@ -256,10 +326,14 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando categorías: " + e.getMessage());
+        } finally {
+            cargandoComboCategorias = false;
         }
     }
 
     private void cargarMarcasCombo() {
+        cargandoComboMarcas = true; // 👉 ACTIVA FLAG
+
         try {
             Connection con = M_ConexionBD.getConexion();
 
@@ -290,6 +364,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
+        } finally {
+            cargandoComboMarcas = false; // 👉 DESACTIVA FLAG
         }
     }
 
@@ -361,7 +437,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         }
 
         DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
-        model.addRow(new Object[]{nombre, marca.getNombre(), presentacion, categoria.getNombre(), codigoBarras, precioSugerido, existencia});
+        model.addRow(new Object[]{nombre, marca.getId(), marca.getNombre(), presentacion, categoria.getId(), categoria.getNombre(), codigoBarras, precioSugerido, existencia});
 
         this.limpiarCampos();
 
@@ -393,6 +469,69 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.txtExistencia.setText("0");
         vRegistrarProducto.txtNombre.requestFocusInWindow();
 
+    }
+
+    private void guardar() {
+        DefaultTableModel tabla = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
+
+        int totalFilas = tabla.getRowCount();
+        List<VO_Producto> listaProducto = new ArrayList<>();
+        if (totalFilas == 0) {
+            return;
+        }
+
+        for (int i = 0; i < totalFilas; i++) {
+            String nombre = tabla.getValueAt(i, 0).toString();
+            int idMarca = Integer.parseInt(tabla.getValueAt(i, 1).toString());
+            String presentacion = tabla.getValueAt(i, 3).toString();
+            int idCategoria = Integer.parseInt(tabla.getValueAt(i, 4).toString());
+            String codigoBarras = tabla.getValueAt(i, 6).toString();
+            double precioSugerido = Double.parseDouble(tabla.getValueAt(i, 7).toString());
+            int existencia = Integer.parseInt(tabla.getValueAt(i, 8).toString());
+
+            VO_Producto vo = new VO_Producto();
+            vo.setNombre(nombre);
+            vo.setIdMarca(idMarca);
+            vo.setTipoPresentacion(presentacion);
+            vo.setIdCategoria(idCategoria);
+            vo.setCodigoBarras(codigoBarras);
+            vo.setPrecioSugerido(precioSugerido);
+            vo.setStock(existencia);
+
+            listaProducto.add(vo);
+        }
+
+        try (Connection con = M_ConexionBD.getConexion()) {
+            DAO_Producto dao = new DAO_Producto(con);
+            boolean exito = dao.guardar(listaProducto);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(vRegistrarProducto,
+                        "✅ Productos guardados correctamente.",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                // 👉 Limpiar tabla y deshabilitar Guardar
+                tabla.setRowCount(0);
+                vRegistrarProducto.btnGuardar.setEnabled(false);
+                vRegistrarProducto.txtNombre.requestFocusInWindow();
+
+            } else {
+                JOptionPane.showMessageDialog(vRegistrarProducto,
+                        "❌ Ocurrió un error al guardar.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(vRegistrarProducto,
+                    "❌ Error de conexión: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
 }
