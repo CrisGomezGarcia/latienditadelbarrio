@@ -60,13 +60,15 @@ public class DAO_Marca {
     
     public List<VO_Marca> obtenerTodasLasMarcas() throws SQLException {
         List<VO_Marca> listaMarcas = new ArrayList<>();
-        String sql = "SELECT id, nombre FROM tbl_marcas WHERE estado = 1;";
+        String sql = "SELECT id, nombre, descripcion, estado FROM tbl_marcas;";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 int id = rs.getInt("id");
                 String nombre = rs.getString("nombre");
-                listaMarcas.add(new VO_Marca(id, nombre));
+                String descripcion = rs.getString("descripcion");
+                int estado = rs.getInt("estado");
+                listaMarcas.add(new VO_Marca(id, nombre, descripcion, estado));
             }
         }
         return listaMarcas;

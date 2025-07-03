@@ -19,12 +19,11 @@ public class VO_Marca {
     
     public VO_Marca() {}
     
-    public VO_Marca(int id, String nombre, String descripcion, int estado, LocalDate createdAt) {
+    public VO_Marca(int id, String nombre, String descripcion, int estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.estado = estado;
-        this.createdAt = createdAt;
     }
     
     public VO_Marca(int id, String nombre) {

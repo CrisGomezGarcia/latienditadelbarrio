@@ -47,8 +47,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
-    private boolean cargandoComboMarcas = false;
-    private boolean cargandoComboCategorias = false;
 
     private final String titulo = "Catálogo | Productos | Registrar producto";
 
@@ -66,7 +64,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         }
     }
 
-    public void cargarFormulario() {
+    private void cargarFormulario() {
         vRegistrarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vRegistrarProducto.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
@@ -295,7 +293,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
     // Métodos
     private void cargarCategoriasCombo() {
-        cargandoComboCategorias = true;
         try {
             Connection con = M_ConexionBD.getConexion();
 
@@ -326,14 +323,10 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando categorías: " + e.getMessage());
-        } finally {
-            cargandoComboCategorias = false;
         }
     }
 
     private void cargarMarcasCombo() {
-        cargandoComboMarcas = true; // 👉 ACTIVA FLAG
-
         try {
             Connection con = M_ConexionBD.getConexion();
 
@@ -364,8 +357,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
-        } finally {
-            cargandoComboMarcas = false; // 👉 DESACTIVA FLAG
         }
     }
 

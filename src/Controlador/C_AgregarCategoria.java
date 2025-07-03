@@ -50,7 +50,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         }
     }
 
-    public void cargarFormulario() {
+    private void cargarFormulario() {
         vAgregarCategoria.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vAgregarCategoria.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
