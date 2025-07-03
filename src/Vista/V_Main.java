@@ -37,7 +37,7 @@ public class V_Main extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         menuAgregarCategoria = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        menuConsultarEditarCategorias = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         menuRegistrarMarca = new javax.swing.JMenuItem();
         menuConsultarEditarMarca = new javax.swing.JMenuItem();
@@ -85,8 +85,9 @@ public class V_Main extends javax.swing.JFrame {
         menuAgregarCategoria.setText("Agregar categoría");
         jMenu3.add(menuAgregarCategoria);
 
-        jMenuItem4.setText("Consultar / Editar categoría");
-        jMenu3.add(jMenuItem4);
+        menuConsultarEditarCategorias.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        menuConsultarEditarCategorias.setText("Consultar / Editar categoría");
+        jMenu3.add(menuConsultarEditarCategorias);
 
         jMenu4.add(jMenu3);
 
@@ -96,6 +97,7 @@ public class V_Main extends javax.swing.JFrame {
         menuRegistrarMarca.setText("Registrar marca");
         jMenu6.add(menuRegistrarMarca);
 
+        menuConsultarEditarMarca.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         menuConsultarEditarMarca.setText("Consultar / Editar marca");
         jMenu6.add(menuConsultarEditarMarca);
 
@@ -107,7 +109,7 @@ public class V_Main extends javax.swing.JFrame {
         menuRegistrarProducto.setText("Registrar producto");
         jMenu5.add(menuRegistrarProducto);
 
-        menuConsultarProducto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
+        menuConsultarProducto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         menuConsultarProducto.setText("Consultar / Editar producto");
         jMenu5.add(menuConsultarProducto);
 
@@ -191,9 +193,9 @@ public class V_Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     public javax.swing.JMenuItem menuAgregarCategoria;
     public javax.swing.JMenuItem menuConsultarCompras;
+    public javax.swing.JMenuItem menuConsultarEditarCategorias;
     public javax.swing.JMenuItem menuConsultarEditarMarca;
     public javax.swing.JMenuItem menuConsultarProducto;
     public javax.swing.JMenuItem menuConsultarVentas;

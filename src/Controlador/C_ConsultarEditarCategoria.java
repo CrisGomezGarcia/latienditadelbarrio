@@ -4,11 +4,11 @@
  */
 package Controlador;
 
-import Modelo.DAO.DAO_Marca;
+import Modelo.DAO.DAO_Categoria;
 import Modelo.M_ConexionBD;
-import Modelo.VO.VO_Marca;
-import Vista.V_ConsultarEditarMarca;
-import Vista.V_JDialog_EditarMarca;
+import Modelo.VO.VO_Categoria;
+import Vista.V_ConsultarEditarCategoria;
+import Vista.V_JDialog_EditarCategoria;
 import Vista.V_Main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -33,21 +33,21 @@ import javax.swing.RowFilter;
  *
  * @author Cristian Gomez
  */
-public class C_ConsultarEditarMarca implements ActionListener, InternalFrameListener {
+public class C_ConsultarEditarCategoria implements ActionListener, InternalFrameListener {
 
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
 
-    private final String titulo = "Catálogos | Marcas | Consultar / Editar marca";
+    private final String titulo = "Catálogos | Categorías | Consultar / Editar categoría";
 
-    private static V_ConsultarEditarMarca vConsultarEditarMarca = null;
+    private static V_ConsultarEditarCategoria vConsultarEditarCategoria = null;
 
     private TableRowSorter<DefaultTableModel> sorter;
 
-    public C_ConsultarEditarMarca(V_Main vMain) {
-        if (C_ConsultarEditarMarca.vConsultarEditarMarca == null) {
-            C_ConsultarEditarMarca.vConsultarEditarMarca = new V_ConsultarEditarMarca();
+    public C_ConsultarEditarCategoria(V_Main vMain) {
+        if (C_ConsultarEditarCategoria.vConsultarEditarCategoria == null) {
+            C_ConsultarEditarCategoria.vConsultarEditarCategoria = new V_ConsultarEditarCategoria();
             this.vMain = vMain;
             cargarFormulario();
             cargarEstructuraTabla();
@@ -56,16 +56,16 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
     }
 
     private void cargarFormulario() {
-        vConsultarEditarMarca.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        frameSize = vConsultarEditarMarca.getSize();
+        vConsultarEditarCategoria.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        frameSize = vConsultarEditarCategoria.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
         locationHeight = ((vMain.desktop.getSize().height - frameSize.height) / 2);
-        vConsultarEditarMarca.setLocation(locationWidth, locationHeight);
-        vMain.desktop.add(vConsultarEditarMarca);
-        vConsultarEditarMarca.setTitle(titulo);
+        vConsultarEditarCategoria.setLocation(locationWidth, locationHeight);
+        vMain.desktop.add(vConsultarEditarCategoria);
+        vConsultarEditarCategoria.setTitle(titulo);
         setActionsListenerAFormulario();
-        vConsultarEditarMarca.toFront();
-        vConsultarEditarMarca.show();
+        vConsultarEditarCategoria.toFront();
+        vConsultarEditarCategoria.show();
     }
 
     private void cargarEstructuraTabla() {
@@ -76,30 +76,30 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
                 return false;
             }
         };
-        vConsultarEditarMarca.tblMarcas.setModel(tableModel);
+        vConsultarEditarCategoria.tblCategorias.setModel(tableModel);
 
         // Crear y aplicar sorter
         sorter = new TableRowSorter<>(tableModel);
-        vConsultarEditarMarca.tblMarcas.setRowSorter(sorter);
+        vConsultarEditarCategoria.tblCategorias.setRowSorter(sorter);
 
         DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
         tableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(0).setMaxWidth(50);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(0).setMinWidth(50);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(0).setResizable(false);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(0).setMaxWidth(50);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(0).setMinWidth(50);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(0).setResizable(false);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
 
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(1).setMaxWidth(150);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(1).setMinWidth(150);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(1).setResizable(false);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(1).setMaxWidth(150);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(1).setMinWidth(150);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(1).setResizable(false);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
 
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
 
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(3).setMaxWidth(80);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(3).setMinWidth(80);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(3).setResizable(false);
-        vConsultarEditarMarca.tblMarcas.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(3).setMaxWidth(80);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(3).setMinWidth(80);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(3).setResizable(false);
+        vConsultarEditarCategoria.tblCategorias.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
 
         // Configura el buscador después de crear el sorter
         configurarBuscador();
@@ -108,7 +108,7 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
     }
 
     private void configurarBuscador() {
-        vConsultarEditarMarca.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+        vConsultarEditarCategoria.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filtrarTabla();
@@ -125,7 +125,7 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
             }
 
             private void filtrarTabla() {
-                String texto = vConsultarEditarMarca.txtBuscar.getText();
+                String texto = vConsultarEditarCategoria.txtBuscar.getText();
                 if (texto.trim().length() == 0) {
                     sorter.setRowFilter(null);
                 } else {
@@ -138,17 +138,17 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
     }
 
     private void setActionsListenerAFormulario() {
-        vConsultarEditarMarca.addInternalFrameListener(this);
+        vConsultarEditarCategoria.addInternalFrameListener(this);
 
         // Configurar que ESC cierre el frame
-        vConsultarEditarMarca.getRootPane().getInputMap(
+        vConsultarEditarCategoria.getRootPane().getInputMap(
                 javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
         ).put(
                 javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0),
                 "ESCAPE"
         );
 
-        vConsultarEditarMarca.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
+        vConsultarEditarCategoria.getRootPane().getActionMap().put("ESCAPE", new javax.swing.AbstractAction() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 cancelarPantalla();
@@ -157,30 +157,30 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
     }
 
     private void setListenersParaControlesTablasBotones() {
-        vConsultarEditarMarca.tblMarcas.addMouseListener(new MouseAdapter() {
+        vConsultarEditarCategoria.tblCategorias.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    int filaSeleccionada = vConsultarEditarMarca.tblMarcas.getSelectedRow();
+                    int filaSeleccionada = vConsultarEditarCategoria.tblCategorias.getSelectedRow();
                     if (filaSeleccionada >= 0) {
-                        int id = (int) vConsultarEditarMarca.tblMarcas.getValueAt(filaSeleccionada, 0);
-                        String nombre = (String) vConsultarEditarMarca.tblMarcas.getValueAt(filaSeleccionada, 1);
-                        String descripcion = (String) vConsultarEditarMarca.tblMarcas.getValueAt(filaSeleccionada, 2);
-                        String estadoTexto = (String) vConsultarEditarMarca.tblMarcas.getValueAt(filaSeleccionada, 3);
+                        int id = (int) vConsultarEditarCategoria.tblCategorias.getValueAt(filaSeleccionada, 0);
+                        String nombre = (String) vConsultarEditarCategoria.tblCategorias.getValueAt(filaSeleccionada, 1);
+                        String descripcion = (String) vConsultarEditarCategoria.tblCategorias.getValueAt(filaSeleccionada, 2);
+                        String estadoTexto = (String) vConsultarEditarCategoria.tblCategorias.getValueAt(filaSeleccionada, 3);
                         int estado = estadoTexto.equalsIgnoreCase("Activo") ? 1 : 0;
 
-                        VO_Marca marcaSeleccionada = new VO_Marca(id, nombre, descripcion, estado);
+                        VO_Categoria categoriaSeleccionada = new VO_Categoria(id, nombre, descripcion, estado);
 
                         try (Connection con = M_ConexionBD.getConexion()) {
-                            V_JDialog_EditarMarca dialogo = new V_JDialog_EditarMarca(vMain, true);
-                            new C_JDialog_EditarMarca(dialogo, marcaSeleccionada, con);
+                            V_JDialog_EditarCategoria dialogo = new V_JDialog_EditarCategoria(vMain, true);
+                            new C_JDialog_EditarCategoria(dialogo, categoriaSeleccionada, con);
                             dialogo.setVisible(true);
 
                             llenarTabla(); // ✅ Recarga después de cerrar el dialog
 
                         } catch (SQLException ex) {
                             ex.printStackTrace();
-                            JOptionPane.showMessageDialog(vConsultarEditarMarca,
+                            JOptionPane.showMessageDialog(vConsultarEditarCategoria,
                                     "Error obteniendo conexión: " + ex.getMessage(),
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE);
@@ -206,7 +206,7 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
 
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-        C_ConsultarEditarMarca.vConsultarEditarMarca = null;
+        C_ConsultarEditarCategoria.vConsultarEditarCategoria = null;
     }
 
     @Override
@@ -226,7 +226,7 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
     }
 
     private void cancelarPantalla() {
-        int opcion = JOptionPane.showConfirmDialog(vConsultarEditarMarca,
+        int opcion = JOptionPane.showConfirmDialog(vConsultarEditarCategoria,
                 "¿Estás seguro de que deseas cancelar y cerrar esta ventana?",
                 "Confirmar cancelación",
                 JOptionPane.YES_NO_OPTION,
@@ -234,31 +234,31 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
         );
 
         if (opcion == JOptionPane.YES_OPTION) {
-            vConsultarEditarMarca.dispose();
-            C_ConsultarEditarMarca.vConsultarEditarMarca = null;
+            vConsultarEditarCategoria.dispose();
+            C_ConsultarEditarCategoria.vConsultarEditarCategoria = null;
         }
     }
 
     private void llenarTabla() {
         try (Connection con = M_ConexionBD.getConexion()) {
-            DAO_Marca dao = new DAO_Marca(con);
-            List<VO_Marca> listaMarca = dao.obtenerTodasLasMarcas();
+            DAO_Categoria dao = new DAO_Categoria(con);
+            List<VO_Categoria> listaCategoria = dao.obtenerTodasLasCategorias();
 
-            DefaultTableModel tablaModel = (DefaultTableModel) vConsultarEditarMarca.tblMarcas.getModel();
+            DefaultTableModel tablaModel = (DefaultTableModel) vConsultarEditarCategoria.tblCategorias.getModel();
             tablaModel.setRowCount(0); // Limpia la tabla
 
-            for (VO_Marca marca : listaMarca) {
-                String estadoLegible = marca.getEstado() == 1 ? "Activo" : "Inactivo";
+            for (VO_Categoria categoria : listaCategoria) {
+                String estadoLegible = categoria.getEstado() == 1 ? "Activo" : "Inactivo";
                 tablaModel.addRow(new Object[]{
-                    marca.getId(),
-                    marca.getNombre(),
-                    marca.getDescripcion(),
+                    categoria.getId(),
+                    categoria.getNombre(),
+                    categoria.getDescripcion(),
                     estadoLegible
                 });
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error cargando marcas: " + e.getMessage());
+            System.out.println("Error cargando categorias: " + e.getMessage());
         }
     }
 

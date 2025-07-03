@@ -459,7 +459,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.txtPrecioSugerido.setText("0");
         vRegistrarProducto.txtExistencia.setText("0");
         vRegistrarProducto.txtNombre.requestFocusInWindow();
-
     }
 
     private void guardar() {
@@ -495,19 +494,16 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Producto dao = new DAO_Producto(con);
             boolean exito = dao.guardar(listaProducto);
-
             if (exito) {
                 JOptionPane.showMessageDialog(vRegistrarProducto,
                         "✅ Productos guardados correctamente.",
                         "Éxito",
                         JOptionPane.INFORMATION_MESSAGE
                 );
-
                 // 👉 Limpiar tabla y deshabilitar Guardar
                 tabla.setRowCount(0);
                 vRegistrarProducto.btnGuardar.setEnabled(false);
                 vRegistrarProducto.txtNombre.requestFocusInWindow();
-
             } else {
                 JOptionPane.showMessageDialog(vRegistrarProducto,
                         "❌ Ocurrió un error al guardar.",
@@ -515,7 +511,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                         JOptionPane.ERROR_MESSAGE
                 );
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "❌ Error de conexión: " + ex.getMessage(),

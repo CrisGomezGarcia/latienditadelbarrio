@@ -8,12 +8,12 @@ package Vista;
  *
  * @author Cristian Gomez
  */
-public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
+public class V_ConsultarEditarCategoria extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form V_ConsultarEditarMarca
      */
-    public V_ConsultarEditarMarca() {
+    public V_ConsultarEditarCategoria() {
         initComponents();
     }
 
@@ -32,22 +32,22 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         scrollPanel = new javax.swing.JScrollPane();
-        tblMarcas = new javax.swing.JTable();
+        tblCategorias = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setText("Consultar / Editar marca");
+        jLabel1.setText("Consultar / Editar categoría");
 
-        jLabel2.setText("<html>En esta pantalla puedes consultar y editar las marcas de tus productos.</html>");
+        jLabel2.setText("<html>En esta pantalla puedes consultar y editar las categorías de tus productos.</html>");
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jLabel3.setText("Buscar");
 
-        jLabel4.setText("<html>Para editar una marca, de doble clic, edite y luego de clic en guardar</html>");
+        jLabel4.setText("<html>Para editar una categoría, de doble clic, edite y luego de clic en guardar</html>");
 
-        tblMarcas.setModel(new javax.swing.table.DefaultTableModel(
+        tblCategorias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -58,7 +58,7 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        scrollPanel.setViewportView(tblMarcas);
+        scrollPanel.setViewportView(tblCategorias);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,7 +110,7 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     public javax.swing.JScrollPane scrollPanel;
-    public javax.swing.JTable tblMarcas;
+    public javax.swing.JTable tblCategorias;
     public javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

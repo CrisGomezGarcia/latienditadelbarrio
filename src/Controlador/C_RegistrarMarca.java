@@ -141,18 +141,12 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             }
         });
 
-        vRegistrarMarca.txtNombre.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarMarca.txtDescripcion.requestFocusInWindow();
-            }
+        vRegistrarMarca.txtNombre.addActionListener((ActionEvent e) -> {
+            vRegistrarMarca.txtDescripcion.requestFocusInWindow();
         });
 
-        vRegistrarMarca.txtDescripcion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarMarcaATabla();
-            }
+        vRegistrarMarca.txtDescripcion.addActionListener((ActionEvent e) -> {
+            agregarMarcaATabla();
         });
     }
 
