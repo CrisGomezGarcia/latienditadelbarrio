@@ -8,10 +8,13 @@ import Modelo.DAO.DAO_Producto;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Producto;
 import Vista.V_ConsultarEditarProducto;
+import Vista.V_JDialog_EditarProducto;
 import Vista.V_Main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,6 +38,8 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
+
+    DefaultTableModel modeloTabla;
 
     private final String titulo = "Catálogos | Productos | Consultar / Editar producto";
 
@@ -104,6 +109,7 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
             }
         };
         vConsultarEditarProducto.tblProductos.setModel(tableModel);
+        this.modeloTabla = (DefaultTableModel) vConsultarEditarProducto.tblProductos.getModel();
 
         DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
         tableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,37 +118,37 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(1).setMinWidth(165);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(1).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(2).setMaxWidth(200);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(2).setMinWidth(200);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(2).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(4).setMaxWidth(120);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(4).setMinWidth(120);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(4).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(4).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(5).setMaxWidth(250);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(5).setMinWidth(250);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(5).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(7).setMaxWidth(120);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(7).setMinWidth(120);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(7).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(7).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(8).setMaxWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(8).setMinWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(8).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(8).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(9).setMaxWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(9).setMinWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(9).setResizable(false);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(9).setCellRenderer(tableCellRenderer);
-        
+
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(10).setMaxWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(10).setMinWidth(100);
         vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(10).setResizable(false);
@@ -163,7 +169,52 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
     }
 
     private void setListenersParaControlesTablasBotones() {
+        vConsultarEditarProducto.tblProductos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int filaSeleccionada = vConsultarEditarProducto.tblProductos.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        int id = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+                        String codigoBarra = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
+                        String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
+                        int marca_id = (int) modeloTabla.getValueAt(filaSeleccionada, 3);
+                        String presentacion = (String) modeloTabla.getValueAt(filaSeleccionada, 5);
+                        int categoria_id = (int) modeloTabla.getValueAt(filaSeleccionada, 6);
+                        double precioSugerido = (double) modeloTabla.getValueAt(filaSeleccionada, 8);
+                        int existencia = (int) modeloTabla.getValueAt(filaSeleccionada, 9);
+                        String estadoTexto = (String) modeloTabla.getValueAt(filaSeleccionada, 10);
+                        int estado = estadoTexto.equalsIgnoreCase("Activo") ? 1 : 0;
 
+                        VO_Producto productoSeleccionado = new VO_Producto();
+                        productoSeleccionado.setId(id);
+                        productoSeleccionado.setCodigoBarras(codigoBarra);
+                        productoSeleccionado.setNombre(nombre);
+                        productoSeleccionado.setMarca_id(marca_id);
+                        productoSeleccionado.setTipoPresentacion(presentacion);
+                        productoSeleccionado.setCategoria_id(categoria_id);
+                        productoSeleccionado.setPrecioSugerido(precioSugerido);
+                        productoSeleccionado.setStock(existencia);
+                        productoSeleccionado.setEstado(estado);
+
+                        try (Connection con = M_ConexionBD.getConexion()) {
+                            V_JDialog_EditarProducto dialogo = new V_JDialog_EditarProducto(vMain, true);
+                            new C_JDialog_EditarProducto(dialogo, productoSeleccionado, con);
+                            dialogo.setVisible(true);
+
+                            llenarTabla(); // ✅ Recarga después de cerrar el dialog
+
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(vConsultarEditarProducto,
+                                    "Error obteniendo conexión: " + ex.getMessage(),
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
