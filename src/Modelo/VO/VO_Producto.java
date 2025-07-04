@@ -23,7 +23,16 @@ public class VO_Producto {
     private int estado;
     private Date createdAt;
 
-    public VO_Producto() { }
+    // Relacionado con las categorias
+    private int categoria_id;
+    private String categoria_nombre;
+
+    // Relacionado con las marcas
+    private int marca_id;
+    private String marca_nombre;
+
+    public VO_Producto() {
+    }
 
     public VO_Producto(int id, String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca, int estado, Date createdAt) {
         this.id = id;
@@ -133,6 +142,41 @@ public class VO_Producto {
     @Override
     public String toString() {
         return nombre + " - " + tipoPresentacion;
+    }
+
+    // Propiedes relacionado con categoria
+    public int getCategoria_id() {
+        return categoria_id;
+    }
+
+    public void setCategoria_id(int categoria_id) {
+        this.categoria_id = categoria_id;
+    }
+
+    public String getCategoria_nombre() {
+        return categoria_nombre;
+    }
+
+    public void setCategoria_nombre(String categoria_nombre) {
+        this.categoria_nombre = categoria_nombre;
+    }
+
+    // Propiedades relacionadas con marca
+    
+    public int getMarca_id() {
+        return marca_id;
+    }
+
+    public void setMarca_id(int marca_id) {
+        this.marca_id = marca_id;
+    }
+
+    public String getMarca_nombre() {
+        return marca_nombre;
+    }
+
+    public void setMarca_nombre(String marca_nombre) {
+        this.marca_nombre = marca_nombre;
     }
 
 }

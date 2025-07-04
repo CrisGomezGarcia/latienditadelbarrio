@@ -37,6 +37,9 @@ public class C_Main implements ActionListener {
             case "registrarProducto" -> {
                 new C_RegistrarProducto(this.vMain);
             }
+            case "consultarEditarProducto" -> {
+                new C_ConsultarEditarProducto(this.vMain);
+            }
             case "agregarCategoría" -> {
                 new C_AgregarCategoria(this.vMain);
             }
@@ -56,6 +59,9 @@ public class C_Main implements ActionListener {
     private void setActionsListenerAMenus() {
         this.vMain.menuRegistrarProducto.setActionCommand("registrarProducto");
         this.vMain.menuRegistrarProducto.addActionListener(this);
+        
+        this.vMain.menuConsultarProducto.setActionCommand("consultarEditarProducto");
+        this.vMain.menuConsultarProducto.addActionListener(this);
         
         this.vMain.menuAgregarCategoria.setActionCommand("agregarCategoría");
         this.vMain.menuAgregarCategoria.addActionListener(this);

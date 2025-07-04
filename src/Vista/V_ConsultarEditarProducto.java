@@ -8,12 +8,12 @@ package Vista;
  *
  * @author Cristian Gomez
  */
-public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
+public class V_ConsultarEditarProducto extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form V_ConsultarEditarMarca
+     * Creates new form V_ConsultarEditarProducto
      */
-    public V_ConsultarEditarMarca() {
+    public V_ConsultarEditarProducto() {
         initComponents();
     }
 
@@ -28,26 +28,21 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtBuscar = new javax.swing.JTextField();
+        scrollPanelProductos = new javax.swing.JScrollPane();
+        tblProductos = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        scrollPanel = new javax.swing.JScrollPane();
-        tblMarcas = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setText("Consultar / Editar marca");
+        jLabel1.setText("Consultar / Editar producto");
 
-        jLabel2.setText("<html>En esta pantalla puedes consultar y editar las marcas de tus productos.</html>");
+        jLabel2.setText("<html>En esta pantalla puedes consultar y editar los productos que tengas registrados.</html>");
 
-        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        jLabel3.setText("Buscar");
-
-        jLabel4.setText("<html>Para editar una marca, de doble clic, edite y luego de clic en guardar</html>");
-
-        tblMarcas.setModel(new javax.swing.table.DefaultTableModel(
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -58,24 +53,30 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        scrollPanel.setViewportView(tblMarcas);
+        tblProductos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        scrollPanelProductos.setViewportView(tblProductos);
+
+        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel3.setText("Buscar");
+
+        jLabel4.setText("<html>Para editar un producto, de doble clic, edite y luego de clic en guardar</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 34, Short.MAX_VALUE))
-                    .addComponent(jLabel4)
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel4))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -90,7 +91,7 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -105,8 +106,8 @@ public class V_ConsultarEditarMarca extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    public javax.swing.JScrollPane scrollPanel;
-    public javax.swing.JTable tblMarcas;
+    public javax.swing.JScrollPane scrollPanelProductos;
+    public javax.swing.JTable tblProductos;
     public javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
