@@ -30,7 +30,11 @@ public class DAO_Producto {
             for (VO_Producto producto : listaProductos) {
                 ps.setString(1, producto.getNombre());
                 ps.setString(2, producto.getTipoPresentacion());
-                ps.setString(3, producto.getCodigoBarras());
+                if (producto.getCodigoBarras() == null || producto.getCodigoBarras().trim().isEmpty()) {
+                    ps.setNull(3, java.sql.Types.VARCHAR);
+                } else {
+                    ps.setString(3, producto.getCodigoBarras());
+                }
                 ps.setDouble(4, producto.getPrecioSugerido());
                 ps.setInt(5, producto.getStock());
                 ps.setInt(6, producto.getIdCategoria());
@@ -60,14 +64,39 @@ public class DAO_Producto {
                 producto.setPrecioSugerido(rs.getFloat("precio_sugerido"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setEstado(rs.getInt("estado"));
-                producto.setCategoria_id(rs.getInt("categoria_id"));
-                producto.setCategoria_nombre(rs.getString("categoria_nombre"));
-                producto.setMarca_id(rs.getInt("marca_id"));
-                producto.setMarca_nombre(rs.getString("marca_nombre"));
+                producto.setIdCategoria(rs.getInt("categoria_id"));
+                producto.setNombreCategoria(rs.getString("categoria_nombre"));
+                producto.setIdMarca(rs.getInt("marca_id"));
+                producto.setNombreMarca(rs.getString("marca_nombre"));
                 listaProductos.add(producto);
             }
         }
         return listaProductos;
     }
 
+    public boolean actualizarProducto(VO_Producto producto) {
+        String sql = "UPDATE tbl_productos SET nombre = ?, tipo_presentacion = ?, codigo_barras = ?, precio_sugerido = ?, id_categoria = ?, id_marca = ?, estado = ? WHERE id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getTipoPresentacion());
+            if (producto.getCodigoBarras() == null || producto.getCodigoBarras().trim().isEmpty()) {
+                ps.setNull(3, java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(3, producto.getCodigoBarras());
+            }
+            ps.setDouble(4, producto.getPrecioSugerido());
+            ps.setInt(5, producto.getIdCategoria());
+            ps.setInt(6, producto.getIdMarca());
+            ps.setInt(7, producto.getEstado());
+            ps.setInt(8, producto.getId());
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.out.println("❌ Error al actualizar producto: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

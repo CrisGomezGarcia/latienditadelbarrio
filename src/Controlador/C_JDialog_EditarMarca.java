@@ -30,9 +30,6 @@ public class C_JDialog_EditarMarca {
 
         cargarDatosMarcaEnDialog();
         setListeners();
-        
-        
-        
     }
 
     private void cargarDatosMarcaEnDialog() {

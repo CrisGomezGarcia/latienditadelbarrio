@@ -183,7 +183,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 if (e.getClickCount() == 2) {
                     int fila = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
                     int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
-                            "¿Deseas eliminar esta categoría de la tabla?",
+                            "¿Deseas eliminar este producto de la tabla?",
                             "Confirmar eliminación",
                             JOptionPane.YES_NO_OPTION);
 
@@ -233,6 +233,26 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarProductoATabla();
+            }
+        });
+
+        vRegistrarProducto.txtPrecioSugerido.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = vRegistrarProducto.txtPrecioSugerido.getText().trim();
+                if (texto.isEmpty()) {
+                    vRegistrarProducto.txtPrecioSugerido.setText("0");
+                }
+            }
+        });
+        
+        vRegistrarProducto.txtExistencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = vRegistrarProducto.txtExistencia.getText().trim();
+                if (texto.isEmpty()) {
+                    vRegistrarProducto.txtExistencia.setText("0");
+                }
             }
         });
 
@@ -291,9 +311,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
     // Métodos
     private void cargarCategoriasCombo() {
-        try {
-            Connection con = M_ConexionBD.getConexion();
-
+        try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Categoria dao = new DAO_Categoria(con);
             List<VO_Categoria> listaCategorias = dao.obtenerCategoriasParaCombobox();
 
@@ -325,9 +343,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
     }
 
     private void cargarMarcasCombo() {
-        try {
-            Connection con = M_ConexionBD.getConexion();
-
+        try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Marca dao = new DAO_Marca(con);
             List<VO_Marca> listaMarcas = dao.obtenerMarcasParaCombobox();
 
@@ -391,37 +407,37 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
         if (presentacion.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "La presentación del producto es obligatorio.",
+                    "La presentación del producto es obligatoria.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.txtPresentacion.requestFocusInWindow();
             return;
         }
 
         if (categoria == null) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "La categoría del producto es obligatorio.",
+                    "La categoría del producto es obligatoria.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.cboCategorias.requestFocusInWindow();
+            return;
+        }
+        
+        if (marca == null) {
+            JOptionPane.showMessageDialog(vRegistrarProducto,
+                    "La marca del producto es obligatoria.",
+                    "Validación",
+                    JOptionPane.WARNING_MESSAGE);
+            vRegistrarProducto.cboMarcas.requestFocusInWindow();
             return;
         }
 
-//        if (codigoBarras.isEmpty()) {
-//            JOptionPane.showMessageDialog(vRegistrarProducto,
-//                    "El código de barras del producto es obligatorio.",
-//                    "Validación",
-//                    JOptionPane.WARNING_MESSAGE);
-//            vRegistrarProducto.txtNombre.requestFocusInWindow();
-//            return;
-//        }
-
         if (precioSugerido == 0) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "El precio del producto es obligatorio.",
+                    "El precio del producto no debe de ser \"0\".",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.txtPrecioSugerido.requestFocusInWindow();
             return;
         }
 

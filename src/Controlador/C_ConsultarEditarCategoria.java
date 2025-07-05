@@ -154,6 +154,12 @@ public class C_ConsultarEditarCategoria implements ActionListener, InternalFrame
                 cancelarPantalla();
             }
         });
+
+        vConsultarEditarCategoria.btnLimpiar.setActionCommand("btnLimpiar");
+        vConsultarEditarCategoria.btnLimpiar.addActionListener(this);
+
+        vConsultarEditarCategoria.btnActualizar.setActionCommand("btnActualizar");
+        vConsultarEditarCategoria.btnActualizar.addActionListener(this);
     }
 
     private void setListenersParaControlesTablasBotones() {
@@ -189,10 +195,40 @@ public class C_ConsultarEditarCategoria implements ActionListener, InternalFrame
                 }
             }
         });
+
+        vConsultarEditarCategoria.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            private void toggleClear() {
+                vConsultarEditarCategoria.btnLimpiar.setVisible(!vConsultarEditarCategoria.txtBuscar.getText().isEmpty());
+            }
+        });
+        vConsultarEditarCategoria.btnLimpiar.setVisible(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String clickName = e.getActionCommand();
+        switch (clickName) {
+            case "btnActualizar" -> {
+                this.llenarTabla();
+            }
+            case "btnLimpiar" -> {
+                vConsultarEditarCategoria.txtBuscar.setText(null);
+            }
+            default ->
+                throw new AssertionError();
+        }
     }
 
     @Override

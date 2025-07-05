@@ -11,6 +11,7 @@ import Vista.V_ConsultarEditarProducto;
 import Vista.V_JDialog_EditarProducto;
 import Vista.V_Main;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -86,6 +87,13 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
                 cancelarPantalla();
             }
         });
+
+        vConsultarEditarProducto.btnLimpiar.setActionCommand("btnLimpiar");
+        vConsultarEditarProducto.btnLimpiar.addActionListener(this);
+
+        vConsultarEditarProducto.btnActualizar.setActionCommand("btnActualizar");
+        vConsultarEditarProducto.btnActualizar.addActionListener(this);
+
     }
 
     private void cargarEstructuraTabla() {
@@ -102,15 +110,19 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
             "Existencia actual", // 9
             "Estado" // 10
         };
-        DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
+        modeloTabla = new DefaultTableModel(null, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        vConsultarEditarProducto.tblProductos.setModel(tableModel);
-        this.modeloTabla = (DefaultTableModel) vConsultarEditarProducto.tblProductos.getModel();
+        vConsultarEditarProducto.tblProductos.setModel(modeloTabla);
 
+        // Crear y aplicar sorter
+        sorter = new TableRowSorter<>(modeloTabla);
+        vConsultarEditarProducto.tblProductos.setRowSorter(sorter);
+
+//        this.modeloTabla = (DefaultTableModel) vConsultarEditarProducto.tblProductos.getModel();
         DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
         tableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -158,10 +170,6 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
         vConsultarEditarProducto.tblProductos.getColumnModel().removeColumn(vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(3));
         vConsultarEditarProducto.tblProductos.getColumnModel().removeColumn(vConsultarEditarProducto.tblProductos.getColumnModel().getColumn(0));
 
-        // Crear y aplicar sorter
-        sorter = new TableRowSorter<>(tableModel);
-        vConsultarEditarProducto.tblProductos.setRowSorter(sorter);
-
         // Configura el buscador después de crear el sorter
         configurarBuscador();
 
@@ -173,26 +181,27 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    int filaSeleccionada = vConsultarEditarProducto.tblProductos.getSelectedRow();
-                    if (filaSeleccionada >= 0) {
-                        int id = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
-                        String codigoBarra = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
-                        String nombre = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
-                        int marca_id = (int) modeloTabla.getValueAt(filaSeleccionada, 3);
-                        String presentacion = (String) modeloTabla.getValueAt(filaSeleccionada, 5);
-                        int categoria_id = (int) modeloTabla.getValueAt(filaSeleccionada, 6);
-                        double precioSugerido = (double) modeloTabla.getValueAt(filaSeleccionada, 8);
-                        int existencia = (int) modeloTabla.getValueAt(filaSeleccionada, 9);
-                        String estadoTexto = (String) modeloTabla.getValueAt(filaSeleccionada, 10);
+                    int filaVista = vConsultarEditarProducto.tblProductos.getSelectedRow();
+                    if (filaVista >= 0) {
+                        int filaModelo = vConsultarEditarProducto.tblProductos.convertRowIndexToModel(filaVista);
+                        int id = (int) modeloTabla.getValueAt(filaModelo, 0);
+                        String codigoBarra = (String) modeloTabla.getValueAt(filaModelo, 1);
+                        String nombre = (String) modeloTabla.getValueAt(filaModelo, 2);
+                        int marca_id = (int) modeloTabla.getValueAt(filaModelo, 3);
+                        String presentacion = (String) modeloTabla.getValueAt(filaModelo, 5);
+                        int categoria_id = (int) modeloTabla.getValueAt(filaModelo, 6);
+                        double precioSugerido = (double) modeloTabla.getValueAt(filaModelo, 8);
+                        int existencia = (int) modeloTabla.getValueAt(filaModelo, 9);
+                        String estadoTexto = (String) modeloTabla.getValueAt(filaModelo, 10);
                         int estado = estadoTexto.equalsIgnoreCase("Activo") ? 1 : 0;
 
                         VO_Producto productoSeleccionado = new VO_Producto();
                         productoSeleccionado.setId(id);
                         productoSeleccionado.setCodigoBarras(codigoBarra);
                         productoSeleccionado.setNombre(nombre);
-                        productoSeleccionado.setMarca_id(marca_id);
+                        productoSeleccionado.setIdMarca(marca_id);
                         productoSeleccionado.setTipoPresentacion(presentacion);
-                        productoSeleccionado.setCategoria_id(categoria_id);
+                        productoSeleccionado.setIdCategoria(categoria_id);
                         productoSeleccionado.setPrecioSugerido(precioSugerido);
                         productoSeleccionado.setStock(existencia);
                         productoSeleccionado.setEstado(estado);
@@ -203,7 +212,6 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
                             dialogo.setVisible(true);
 
                             llenarTabla(); // ✅ Recarga después de cerrar el dialog
-
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(vConsultarEditarProducto,
@@ -215,10 +223,41 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
                 }
             }
         });
+
+        vConsultarEditarProducto.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                toggleClear();
+            }
+
+            private void toggleClear() {
+                vConsultarEditarProducto.btnLimpiar.setVisible(!vConsultarEditarProducto.txtBuscar.getText().isEmpty());
+            }
+        });
+        vConsultarEditarProducto.btnLimpiar.setVisible(false);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String clickName = e.getActionCommand();
+        switch (clickName) {
+            case "btnActualizar" -> {
+                this.llenarTabla();
+            }
+            case "btnLimpiar" -> {
+                vConsultarEditarProducto.txtBuscar.setText(null);
+            }
+            default ->
+                throw new AssertionError();
+        }
     }
 
     @Override
@@ -310,17 +349,16 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
                     producto.getId(),
                     producto.getCodigoBarras(),
                     producto.getNombre(),
-                    producto.getMarca_id(),
-                    producto.getMarca_nombre(),
+                    producto.getIdMarca(),
+                    producto.getNombreMarca(),
                     producto.getTipoPresentacion(),
-                    producto.getCategoria_id(),
-                    producto.getCategoria_nombre(),
+                    producto.getIdCategoria(),
+                    producto.getNombreCategoria(),
                     producto.getPrecioSugerido(),
                     producto.getStock(),
                     estadoLegible
                 });
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando productos: " + e.getMessage());
