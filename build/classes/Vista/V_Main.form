@@ -40,10 +40,16 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+                <MenuItem class="javax.swing.JMenuItem" name="menuConsultarEditarCategorias">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F4"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Consultar / Editar categor&#xed;a"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -65,6 +71,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="menuConsultarEditarMarca">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="F5"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Consultar / Editar marca"/>
                   </Properties>
                   <AuxValues>
@@ -92,7 +101,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="menuConsultarProducto">
                   <Properties>
                     <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="F8"/>
+                      <KeyStroke key="F6"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Consultar / Editar producto"/>
                   </Properties>

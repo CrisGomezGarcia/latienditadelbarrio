@@ -8,7 +8,6 @@ import Vista.V_Main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 /**
  *
@@ -26,8 +25,6 @@ public class C_Main implements ActionListener {
     public void CargarFormulario() {
         this.vMain.setTitle(title);
         this.vMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        this.vMain.setResizable(false);
-//        this.vMain.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setActionsListenerAMenus();
         
         this.vMain.setVisible(true);
@@ -40,11 +37,20 @@ public class C_Main implements ActionListener {
             case "registrarProducto" -> {
                 new C_RegistrarProducto(this.vMain);
             }
+            case "consultarEditarProducto" -> {
+                new C_ConsultarEditarProducto(this.vMain);
+            }
             case "agregarCategoría" -> {
                 new C_AgregarCategoria(this.vMain);
             }
-            case "agregarUnidadMedida" -> {
+            case "consultarEditarCategoria" -> {
+                new C_ConsultarEditarCategoria(this.vMain);
+            }
+            case "registrarMarca" -> {
                 new C_RegistrarMarca(this.vMain);
+            }
+            case "consultarEditarMarca" -> {
+                new C_ConsultarEditarMarca(this.vMain);
             }
             default -> throw new AssertionError();
         }
@@ -54,10 +60,19 @@ public class C_Main implements ActionListener {
         this.vMain.menuRegistrarProducto.setActionCommand("registrarProducto");
         this.vMain.menuRegistrarProducto.addActionListener(this);
         
+        this.vMain.menuConsultarProducto.setActionCommand("consultarEditarProducto");
+        this.vMain.menuConsultarProducto.addActionListener(this);
+        
         this.vMain.menuAgregarCategoria.setActionCommand("agregarCategoría");
         this.vMain.menuAgregarCategoria.addActionListener(this);
         
-        this.vMain.menuRegistrarMarca.setActionCommand("agregarUnidadMedida");
+        this.vMain.menuConsultarEditarCategorias.setActionCommand("consultarEditarCategoria");
+        this.vMain.menuConsultarEditarCategorias.addActionListener(this);
+        
+        this.vMain.menuRegistrarMarca.setActionCommand("registrarMarca");
         this.vMain.menuRegistrarMarca.addActionListener(this);
+        
+        this.vMain.menuConsultarEditarMarca.setActionCommand("consultarEditarMarca");
+        this.vMain.menuConsultarEditarMarca.addActionListener(this);
     }
 }

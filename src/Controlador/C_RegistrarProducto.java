@@ -30,13 +30,11 @@ import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -47,8 +45,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
     private Dimension frameSize;
     int locationWidth, locationHeight;
     private V_Main vMain = null;
-    private boolean cargandoComboMarcas = false;
-    private boolean cargandoComboCategorias = false;
 
     private final String titulo = "Catálogo | Productos | Registrar producto";
 
@@ -66,7 +62,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         }
     }
 
-    public void cargarFormulario() {
+    private void cargarFormulario() {
         vRegistrarProducto.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vRegistrarProducto.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
@@ -187,7 +183,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 if (e.getClickCount() == 2) {
                     int fila = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
                     int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
-                            "¿Deseas eliminar esta categoría de la tabla?",
+                            "¿Deseas eliminar este producto de la tabla?",
                             "Confirmar eliminación",
                             JOptionPane.YES_NO_OPTION);
 
@@ -237,6 +233,26 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarProductoATabla();
+            }
+        });
+
+        vRegistrarProducto.txtPrecioSugerido.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = vRegistrarProducto.txtPrecioSugerido.getText().trim();
+                if (texto.isEmpty()) {
+                    vRegistrarProducto.txtPrecioSugerido.setText("0");
+                }
+            }
+        });
+        
+        vRegistrarProducto.txtExistencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = vRegistrarProducto.txtExistencia.getText().trim();
+                if (texto.isEmpty()) {
+                    vRegistrarProducto.txtExistencia.setText("0");
+                }
             }
         });
 
@@ -295,10 +311,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
     // Métodos
     private void cargarCategoriasCombo() {
-        cargandoComboCategorias = true;
-        try {
-            Connection con = M_ConexionBD.getConexion();
-
+        try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Categoria dao = new DAO_Categoria(con);
             List<VO_Categoria> listaCategorias = dao.obtenerCategoriasParaCombobox();
 
@@ -326,17 +339,11 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando categorías: " + e.getMessage());
-        } finally {
-            cargandoComboCategorias = false;
         }
     }
 
     private void cargarMarcasCombo() {
-        cargandoComboMarcas = true; // 👉 ACTIVA FLAG
-
-        try {
-            Connection con = M_ConexionBD.getConexion();
-
+        try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Marca dao = new DAO_Marca(con);
             List<VO_Marca> listaMarcas = dao.obtenerMarcasParaCombobox();
 
@@ -364,8 +371,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
-        } finally {
-            cargandoComboMarcas = false; // 👉 DESACTIVA FLAG
         }
     }
 
@@ -402,37 +407,37 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
         if (presentacion.isEmpty()) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "La presentación del producto es obligatorio.",
+                    "La presentación del producto es obligatoria.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.txtPresentacion.requestFocusInWindow();
             return;
         }
 
         if (categoria == null) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "La categoría del producto es obligatorio.",
+                    "La categoría del producto es obligatoria.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.cboCategorias.requestFocusInWindow();
             return;
         }
-
-        if (codigoBarras.isEmpty()) {
+        
+        if (marca == null) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "El código de barras del producto es obligatorio.",
+                    "La marca del producto es obligatoria.",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.cboMarcas.requestFocusInWindow();
             return;
         }
 
         if (precioSugerido == 0) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
-                    "El precio del producto es obligatorio.",
+                    "El precio del producto no debe de ser \"0\".",
                     "Validación",
                     JOptionPane.WARNING_MESSAGE);
-            vRegistrarProducto.txtNombre.requestFocusInWindow();
+            vRegistrarProducto.txtPrecioSugerido.requestFocusInWindow();
             return;
         }
 
@@ -468,7 +473,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.txtPrecioSugerido.setText("0");
         vRegistrarProducto.txtExistencia.setText("0");
         vRegistrarProducto.txtNombre.requestFocusInWindow();
-
     }
 
     private void guardar() {
@@ -504,19 +508,16 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         try (Connection con = M_ConexionBD.getConexion()) {
             DAO_Producto dao = new DAO_Producto(con);
             boolean exito = dao.guardar(listaProducto);
-
             if (exito) {
                 JOptionPane.showMessageDialog(vRegistrarProducto,
                         "✅ Productos guardados correctamente.",
                         "Éxito",
                         JOptionPane.INFORMATION_MESSAGE
                 );
-
                 // 👉 Limpiar tabla y deshabilitar Guardar
                 tabla.setRowCount(0);
                 vRegistrarProducto.btnGuardar.setEnabled(false);
                 vRegistrarProducto.txtNombre.requestFocusInWindow();
-
             } else {
                 JOptionPane.showMessageDialog(vRegistrarProducto,
                         "❌ Ocurrió un error al guardar.",
@@ -524,7 +525,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                         JOptionPane.ERROR_MESSAGE
                 );
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "❌ Error de conexión: " + ex.getMessage(),

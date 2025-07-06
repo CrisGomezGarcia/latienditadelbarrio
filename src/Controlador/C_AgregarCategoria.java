@@ -50,7 +50,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         }
     }
 
-    public void cargarFormulario() {
+    private void cargarFormulario() {
         vAgregarCategoria.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         frameSize = vAgregarCategoria.getSize();
         locationWidth = ((vMain.desktop.getSize().width - frameSize.width) / 2);
@@ -260,6 +260,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         if (totalFilas == 0) {
             return;
         }
+        
         for (int i = 0; i < totalFilas; i++) {
             String nombre = tabla.getValueAt(i, 0).toString();
             String descripcion = tabla.getValueAt(i, 1).toString();
@@ -288,7 +289,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 vAgregarCategoria.btnGuardar.setEnabled(false);
-
             } else {
                 JOptionPane.showMessageDialog(
                         vAgregarCategoria,
@@ -297,7 +297,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                         JOptionPane.ERROR_MESSAGE
                 );
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(
                     vAgregarCategoria,

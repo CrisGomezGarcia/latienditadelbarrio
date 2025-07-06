@@ -23,6 +23,13 @@ public class VO_Categoria {
         this.estado = estado;
         this.createdAt = createdAt;
     }
+    
+    public VO_Categoria(int id, String nombre, String descripcion, int estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
 
     public VO_Categoria(int id, String nombre) {
         this.id = id;
