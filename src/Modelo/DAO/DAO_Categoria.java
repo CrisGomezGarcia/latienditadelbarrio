@@ -87,7 +87,6 @@ public class DAO_Categoria {
 
         } catch (SQLException e) {
             System.out.println("❌ Error al actualizar categoría: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }

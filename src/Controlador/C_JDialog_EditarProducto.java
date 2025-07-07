@@ -33,13 +33,11 @@ public class C_JDialog_EditarProducto {
 
     private final V_JDialog_EditarProducto dlg;
     private final VO_Producto productoSeleccionado;
-    private final Connection con;
     private final DAO_Producto dao;
 
     public C_JDialog_EditarProducto(V_JDialog_EditarProducto dlg, VO_Producto productoSeleccionado, Connection con) {
         this.dlg = dlg;
         this.productoSeleccionado = productoSeleccionado;
-        this.con = con;
         this.dao = new DAO_Producto(con);
         this.cargarMarcasCombo();
         this.cargarCategoriasCombo();
@@ -49,8 +47,8 @@ public class C_JDialog_EditarProducto {
 
     private void cargarMarcasCombo() {
         try (Connection con = M_ConexionBD.getConexion()) {
-            DAO_Marca dao = new DAO_Marca(con);
-            List<VO_Marca> listaMarcas = dao.obtenerMarcasParaCombobox();
+            DAO_Marca daoMarca = new DAO_Marca(con);
+            List<VO_Marca> listaMarcas = daoMarca.obtenerMarcasParaCombobox();
 
             EventList<VO_Marca> marcasEventList = new BasicEventList<>();
             marcasEventList.addAll(listaMarcas);
@@ -63,8 +61,8 @@ public class C_JDialog_EditarProducto {
                 public java.awt.Component getListCellRendererComponent(
                         JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                     super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    if (value instanceof VO_Marca) {
-                        setText(((VO_Marca) value).getNombre());
+                    if (value instanceof VO_Marca IMarca) {
+                        setText(IMarca.getNombre());
                     }
                     return this;
                 }
@@ -74,15 +72,14 @@ public class C_JDialog_EditarProducto {
             support.setStrict(true);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
         }
     }
 
     private void cargarCategoriasCombo() {
         try (Connection con = M_ConexionBD.getConexion()) {
-            DAO_Categoria dao = new DAO_Categoria(con);
-            List<VO_Categoria> listaCategorias = dao.obtenerCategoriasParaCombobox();
+            DAO_Categoria daoCategoria = new DAO_Categoria(con);
+            List<VO_Categoria> listaCategorias = daoCategoria.obtenerCategoriasParaCombobox();
 
             EventList<VO_Categoria> categoriasEventList = new BasicEventList<>();
             categoriasEventList.addAll(listaCategorias);
@@ -95,8 +92,8 @@ public class C_JDialog_EditarProducto {
                 public java.awt.Component getListCellRendererComponent(
                         JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                     super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    if (value instanceof VO_Categoria) {
-                        setText(((VO_Categoria) value).getNombre());
+                    if (value instanceof VO_Categoria ICategoria) {
+                        setText(ICategoria.getNombre());
                     }
                     return this;
                 }
@@ -106,7 +103,6 @@ public class C_JDialog_EditarProducto {
             support.setStrict(true);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando categorías: " + e.getMessage());
         }
     }
@@ -185,6 +181,34 @@ public class C_JDialog_EditarProducto {
                 String texto = dlg.txtExistencia.getText().trim();
                 if (texto.isEmpty()) {
                     dlg.txtExistencia.setText("0");
+                }
+            }
+        });
+        
+        dlg.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '.' && c != '\b') {
+                    evt.consume();
+                }
+
+                if (c == '.' && dlg.txtPrecioSugerido.getText().contains(".")) {
+                    evt.consume();
+                }
+            }
+        });
+
+        dlg.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '\b') {
+                    evt.consume();
                 }
             }
         });

@@ -87,7 +87,6 @@ public class DAO_Marca {
 
         } catch (SQLException e) {
             System.out.println("❌ Error al actualizar marca: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }

@@ -141,18 +141,12 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             }
         });
 
-        vAgregarCategoria.txtNombreCategoria.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vAgregarCategoria.txtDescripcion.requestFocusInWindow();
-            }
+        vAgregarCategoria.txtNombreCategoria.addActionListener((ActionEvent e) -> {
+            vAgregarCategoria.txtDescripcion.requestFocusInWindow();
         });
 
-        vAgregarCategoria.txtDescripcion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarCategoriaATabla();
-            }
+        vAgregarCategoria.txtDescripcion.addActionListener((ActionEvent e) -> {
+            agregarCategoriaATabla();
         });
     }
 

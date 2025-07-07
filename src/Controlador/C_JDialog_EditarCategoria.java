@@ -19,14 +19,12 @@ public class C_JDialog_EditarCategoria {
 
     private final V_JDialog_EditarCategoria dlg;
     private final VO_Categoria categoriaSeleccionada;
-    private final Connection con;
     private final DAO_Categoria dao;
 
     public C_JDialog_EditarCategoria(V_JDialog_EditarCategoria dlg, VO_Categoria categoriaSeleccionada, Connection con) {
         this.dlg = dlg;
         this.categoriaSeleccionada = categoriaSeleccionada;
-        this.con = con;
-        this.dao = new DAO_Categoria(this.con);
+        this.dao = new DAO_Categoria(con);
         
         cargarDatosCategoriaEnDialog();
         setListeners();

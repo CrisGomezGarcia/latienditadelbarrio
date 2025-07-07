@@ -185,7 +185,6 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
                             llenarTabla(); // ✅ Recarga después de cerrar el dialog
 
                         } catch (SQLException ex) {
-                            ex.printStackTrace();
                             JOptionPane.showMessageDialog(vConsultarEditarMarca,
                                     "Error obteniendo conexión: " + ex.getMessage(),
                                     "Error",
@@ -197,14 +196,17 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
         });
 
         vConsultarEditarMarca.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 toggleClear();
             }
@@ -293,7 +295,6 @@ public class C_ConsultarEditarMarca implements ActionListener, InternalFrameList
                 });
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
         }
     }

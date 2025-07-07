@@ -95,7 +95,6 @@ public class DAO_Producto {
 
         } catch (SQLException e) {
             System.out.println("❌ Error al actualizar producto: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
