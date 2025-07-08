@@ -37,6 +37,7 @@ public class V_ConsultarEditarProducto extends javax.swing.JInternalFrame {
         btnActualizar = new javax.swing.JButton();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N

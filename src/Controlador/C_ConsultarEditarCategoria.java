@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Categoria;
@@ -29,10 +25,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_ConsultarEditarCategoria implements ActionListener, InternalFrameListener {
 
     private Dimension frameSize;
@@ -185,7 +177,6 @@ public class C_ConsultarEditarCategoria implements ActionListener, InternalFrame
                             llenarTabla(); // ✅ Recarga después de cerrar el dialog
 
                         } catch (SQLException ex) {
-                            ex.printStackTrace();
                             JOptionPane.showMessageDialog(vConsultarEditarCategoria,
                                     "Error obteniendo conexión: " + ex.getMessage(),
                                     "Error",
@@ -197,14 +188,17 @@ public class C_ConsultarEditarCategoria implements ActionListener, InternalFrame
         });
 
         vConsultarEditarCategoria.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 toggleClear();
             }
@@ -293,7 +287,6 @@ public class C_ConsultarEditarCategoria implements ActionListener, InternalFrame
                 });
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando categorias: " + e.getMessage());
         }
     }

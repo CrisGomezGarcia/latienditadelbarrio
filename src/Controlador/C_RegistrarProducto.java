@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Categoria;
@@ -36,10 +32,6 @@ import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_RegistrarProducto implements InternalFrameListener, ActionListener {
 
     private Dimension frameSize;
@@ -200,40 +192,24 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             }
         });
 
-        vRegistrarProducto.txtNombre.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarProducto.cboMarcas.requestFocusInWindow();
-            }
+        vRegistrarProducto.txtNombre.addActionListener((ActionEvent e) -> {
+            vRegistrarProducto.cboMarcas.requestFocusInWindow();
         });
 
-        vRegistrarProducto.txtPresentacion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarProducto.cboCategorias.requestFocusInWindow();
-
-            }
+        vRegistrarProducto.txtPresentacion.addActionListener((ActionEvent e) -> {
+            vRegistrarProducto.cboCategorias.requestFocusInWindow();
         });
 
-        vRegistrarProducto.txtCodigoBarras.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarProducto.txtPrecioSugerido.requestFocusInWindow();
-            }
+        vRegistrarProducto.txtCodigoBarras.addActionListener((ActionEvent e) -> {
+            vRegistrarProducto.txtPrecioSugerido.requestFocusInWindow();
         });
 
-        vRegistrarProducto.txtPrecioSugerido.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarProducto.txtExistencia.requestFocusInWindow();
-            }
+        vRegistrarProducto.txtPrecioSugerido.addActionListener((ActionEvent e) -> {
+            vRegistrarProducto.txtExistencia.requestFocusInWindow();
         });
 
-        vRegistrarProducto.txtExistencia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarProductoATabla();
-            }
+        vRegistrarProducto.txtExistencia.addActionListener((ActionEvent e) -> {
+            agregarProductoATabla();
         });
 
         vRegistrarProducto.txtPrecioSugerido.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -326,8 +302,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 public java.awt.Component getListCellRendererComponent(
                         JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                     super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    if (value instanceof VO_Categoria) {
-                        setText(((VO_Categoria) value).getNombre());
+                    if (value instanceof VO_Categoria ICategoria) {
+                        setText(ICategoria.getNombre());
                     }
                     return this;
                 }
@@ -337,7 +313,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             support.setStrict(true);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando categorías: " + e.getMessage());
         }
     }
@@ -358,8 +333,8 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 public java.awt.Component getListCellRendererComponent(
                         JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                     super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    if (value instanceof VO_Marca) {
-                        setText(((VO_Marca) value).getNombre());
+                    if (value instanceof VO_Marca IMarca) {
+                        setText(IMarca.getNombre());
                     }
                     return this;
                 }
@@ -369,7 +344,6 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             support.setStrict(true);
 
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando marcas: " + e.getMessage());
         }
     }

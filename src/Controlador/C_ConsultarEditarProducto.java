@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Producto;
@@ -11,7 +7,6 @@ import Vista.V_ConsultarEditarProducto;
 import Vista.V_JDialog_EditarProducto;
 import Vista.V_Main;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -30,10 +25,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_ConsultarEditarProducto implements ActionListener, InternalFrameListener {
 
     private Dimension frameSize;
@@ -213,7 +204,6 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
 
                             llenarTabla(); // ✅ Recarga después de cerrar el dialog
                         } catch (SQLException ex) {
-                            ex.printStackTrace();
                             JOptionPane.showMessageDialog(vConsultarEditarProducto,
                                     "Error obteniendo conexión: " + ex.getMessage(),
                                     "Error",
@@ -225,14 +215,17 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
         });
 
         vConsultarEditarProducto.txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 toggleClear();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 toggleClear();
             }
@@ -360,7 +353,6 @@ public class C_ConsultarEditarProducto implements ActionListener, InternalFrameL
                 });
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Error cargando productos: " + e.getMessage());
         }
     }

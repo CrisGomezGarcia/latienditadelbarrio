@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.DAO;
 
 import Modelo.VO.VO_Categoria;
@@ -12,10 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class DAO_Categoria {
 
     private final Connection con;
@@ -75,7 +67,7 @@ public class DAO_Categoria {
     }
     
     public boolean actualizarCategoria(VO_Categoria categoria) {
-        String sql = "UPDATE tbl_categorias SET nombre = ?, descripcion = ?, estado = ?, updated_at = CURRENT_DATE WHERE id = ?";
+        String sql = "UPDATE tbl_categorias SET nombre = ?, descripcion = ?, estado = ? WHERE id = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, categoria.getNombre());
             ps.setString(2, categoria.getDescripcion());
@@ -87,7 +79,6 @@ public class DAO_Categoria {
 
         } catch (SQLException e) {
             System.out.println("❌ Error al actualizar categoría: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }

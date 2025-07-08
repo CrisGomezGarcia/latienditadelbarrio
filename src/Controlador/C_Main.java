@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Vista.V_Main;
@@ -9,10 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_Main implements ActionListener {
     
     private V_Main vMain = null;
@@ -52,6 +44,12 @@ public class C_Main implements ActionListener {
             case "consultarEditarMarca" -> {
                 new C_ConsultarEditarMarca(this.vMain);
             }
+            case "registrarProveedor" -> {
+                new C_RegistrarProveedor(this.vMain);
+            }
+            case "consultarEditarProveedor" -> {
+                new C_ConsultarEditarProveedor(this.vMain);
+            }
             default -> throw new AssertionError();
         }
     }
@@ -60,8 +58,8 @@ public class C_Main implements ActionListener {
         this.vMain.menuRegistrarProducto.setActionCommand("registrarProducto");
         this.vMain.menuRegistrarProducto.addActionListener(this);
         
-        this.vMain.menuConsultarProducto.setActionCommand("consultarEditarProducto");
-        this.vMain.menuConsultarProducto.addActionListener(this);
+        this.vMain.menuConsultarEditarProducto.setActionCommand("consultarEditarProducto");
+        this.vMain.menuConsultarEditarProducto.addActionListener(this);
         
         this.vMain.menuAgregarCategoria.setActionCommand("agregarCategoría");
         this.vMain.menuAgregarCategoria.addActionListener(this);
@@ -74,5 +72,11 @@ public class C_Main implements ActionListener {
         
         this.vMain.menuConsultarEditarMarca.setActionCommand("consultarEditarMarca");
         this.vMain.menuConsultarEditarMarca.addActionListener(this);
+        
+        this.vMain.menuRegistrarProveedor.setActionCommand("registrarProveedor");
+        this.vMain.menuRegistrarProveedor.addActionListener(this);
+        
+        this.vMain.menuConsultarEditarProveedor.setActionCommand("consultarEditarProveedor");
+        this.vMain.menuConsultarEditarProveedor.addActionListener(this);
     }
 }

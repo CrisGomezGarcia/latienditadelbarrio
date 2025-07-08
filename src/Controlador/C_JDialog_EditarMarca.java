@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Marca;
@@ -11,23 +7,16 @@ import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_JDialog_EditarMarca {
 
     private final V_JDialog_EditarMarca dlg;
     private final VO_Marca marcaSeleccionada;
-    private final Connection con;
     private final DAO_Marca dao;
 
     public C_JDialog_EditarMarca(V_JDialog_EditarMarca dlg, VO_Marca marcaSeleccionada, Connection con) {
         this.dlg = dlg;
         this.marcaSeleccionada = marcaSeleccionada;
-        this.con = con;
-        this.dao = new DAO_Marca(this.con);
-
+        this.dao = new DAO_Marca(con);
         cargarDatosMarcaEnDialog();
         setListeners();
     }

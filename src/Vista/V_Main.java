@@ -43,13 +43,19 @@ public class V_Main extends javax.swing.JFrame {
         menuConsultarEditarMarca = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         menuRegistrarProducto = new javax.swing.JMenuItem();
-        menuConsultarProducto = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        menuNuevaVenta = new javax.swing.JMenuItem();
-        menuConsultarVentas = new javax.swing.JMenuItem();
+        menuConsultarEditarProducto = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        menuRegistrarProveedor = new javax.swing.JMenuItem();
+        menuConsultarEditarProveedor = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistrarCompra = new javax.swing.JMenuItem();
         menuConsultarCompras = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuNuevaVenta = new javax.swing.JMenuItem();
+        menuConsultarVentas = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -109,23 +115,33 @@ public class V_Main extends javax.swing.JFrame {
         menuRegistrarProducto.setText("Registrar producto");
         jMenu5.add(menuRegistrarProducto);
 
-        menuConsultarProducto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
-        menuConsultarProducto.setText("Consultar / Editar producto");
-        jMenu5.add(menuConsultarProducto);
+        menuConsultarEditarProducto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        menuConsultarEditarProducto.setText("Consultar / Editar producto");
+        jMenu5.add(menuConsultarEditarProducto);
 
         jMenu4.add(jMenu5);
 
+        jMenu8.setText("Proveedores");
+
+        menuRegistrarProveedor.setText("Registrar proveedor");
+        jMenu8.add(menuRegistrarProveedor);
+
+        menuConsultarEditarProveedor.setText("Consultar / Editar proveedor");
+        jMenu8.add(menuConsultarEditarProveedor);
+
+        jMenu4.add(jMenu8);
+
         jMenuBar1.add(jMenu4);
 
-        jMenu1.setText("Ventas");
+        jMenu7.setText("Inventario");
 
-        menuNuevaVenta.setText("Registrar nueva venta");
-        jMenu1.add(menuNuevaVenta);
+        jMenuItem4.setText("Consultar existencias");
+        jMenu7.add(jMenuItem4);
 
-        menuConsultarVentas.setText("Consultar ventas");
-        jMenu1.add(menuConsultarVentas);
+        jMenuItem5.setText("Ajuste de inventario");
+        jMenu7.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenu7);
 
         jMenu2.setText("Compras");
 
@@ -138,6 +154,16 @@ public class V_Main extends javax.swing.JFrame {
         jMenu2.add(menuConsultarCompras);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Ventas");
+
+        menuNuevaVenta.setText("Registrar venta");
+        jMenu1.add(menuNuevaVenta);
+
+        menuConsultarVentas.setText("Consultar ventas");
+        jMenu1.add(menuConsultarVentas);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -189,19 +215,25 @@ public class V_Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     public javax.swing.JMenuItem menuAgregarCategoria;
     public javax.swing.JMenuItem menuConsultarCompras;
     public javax.swing.JMenuItem menuConsultarEditarCategorias;
     public javax.swing.JMenuItem menuConsultarEditarMarca;
-    public javax.swing.JMenuItem menuConsultarProducto;
+    public javax.swing.JMenuItem menuConsultarEditarProducto;
+    public javax.swing.JMenuItem menuConsultarEditarProveedor;
     public javax.swing.JMenuItem menuConsultarVentas;
     public javax.swing.JMenuItem menuNuevaVenta;
     public javax.swing.JMenuItem menuRegistrarCompra;
     public javax.swing.JMenuItem menuRegistrarMarca;
     public javax.swing.JMenuItem menuRegistrarProducto;
+    public javax.swing.JMenuItem menuRegistrarProveedor;
     // End of variables declaration//GEN-END:variables
 }
