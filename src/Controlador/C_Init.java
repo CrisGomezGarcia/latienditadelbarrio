@@ -1,17 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
+import Modelo.M_ConexionBD;
 import Vista.V_Main;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_Init {
+
     public static void main(String[] args) {
-        new C_Main(new V_Main()).CargarFormulario();
+        V_Main ventana = new V_Main();
+        new C_Main(ventana).CargarFormulario();
+
+        // 👉 Añades listener para cuando el usuario cierre la ventana principal
+        ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.out.println("Cerrando pool Hikari...");
+                M_ConexionBD.cerrarPool();
+                System.exit(0); // Salir de la app completamente
+            }
+        });
     }
 }

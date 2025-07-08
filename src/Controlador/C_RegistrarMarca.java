@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Marca;
@@ -26,10 +22,6 @@ import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
 
     private Dimension frameSize;
@@ -141,18 +133,12 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             }
         });
 
-        vRegistrarMarca.txtNombre.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                vRegistrarMarca.txtDescripcion.requestFocusInWindow();
-            }
+        vRegistrarMarca.txtNombre.addActionListener((ActionEvent e) -> {
+            vRegistrarMarca.txtDescripcion.requestFocusInWindow();
         });
 
-        vRegistrarMarca.txtDescripcion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarMarcaATabla();
-            }
+        vRegistrarMarca.txtDescripcion.addActionListener((ActionEvent e) -> {
+            agregarMarcaATabla();
         });
     }
 

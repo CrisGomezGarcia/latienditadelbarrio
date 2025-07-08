@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.VO;
 
 import java.sql.Date;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class VO_Producto {
 
     private int id;
@@ -19,11 +11,14 @@ public class VO_Producto {
     private double precioSugerido;
     private int stock;
     private int idCategoria;
+    private String nombreCategoria;
     private int idMarca;
+    private String nombreMarca;
     private int estado;
     private Date createdAt;
 
-    public VO_Producto() { }
+    public VO_Producto() {
+    }
 
     public VO_Producto(int id, String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca, int estado, Date createdAt) {
         this.id = id;
@@ -106,12 +101,28 @@ public class VO_Producto {
         this.idCategoria = idCategoria;
     }
 
+    public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+
     public int getIdMarca() {
         return idMarca;
     }
 
     public void setIdMarca(int idMarca) {
         this.idMarca = idMarca;
+    }
+
+    public String getNombreMarca() {
+        return nombreMarca;
+    }
+
+    public void setNombreMarca(String nombreMarca) {
+        this.nombreMarca = nombreMarca;
     }
 
     public int getEstado() {
@@ -134,5 +145,4 @@ public class VO_Producto {
     public String toString() {
         return nombre + " - " + tipoPresentacion;
     }
-
 }
