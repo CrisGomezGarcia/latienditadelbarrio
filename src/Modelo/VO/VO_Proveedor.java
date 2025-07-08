@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo.VO;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class VO_Proveedor {
 
     private int id;
@@ -22,6 +14,11 @@ public class VO_Proveedor {
 
     }
 
+    public VO_Proveedor(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+    
     public VO_Proveedor(String nombre, String rfc, String telefono, String correo, String direccion) {
         this.nombre = nombre;
         this.rfc = rfc;

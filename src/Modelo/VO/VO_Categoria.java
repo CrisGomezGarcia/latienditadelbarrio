@@ -2,9 +2,6 @@ package Modelo.VO;
 
 import java.time.LocalDate;
 
-/**
- * @author Cristian Gomez
- */
 public class VO_Categoria {
 
     private int id;

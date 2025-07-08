@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Proveedor;
@@ -26,10 +22,6 @@ import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_RegistrarProveedor implements ActionListener, InternalFrameListener {
 
     private Dimension frameSize;
@@ -76,13 +68,13 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
         DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
         tableCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setMaxWidth(210);
-        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setMinWidth(210);
+        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setMaxWidth(150);
+        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setMinWidth(150);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setResizable(false);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(0).setCellRenderer(tableCellRenderer);
 
-        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setMaxWidth(150);
-        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setMinWidth(150);
+        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setMaxWidth(210);
+        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setMinWidth(210);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setResizable(false);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(1).setCellRenderer(tableCellRenderer);
 

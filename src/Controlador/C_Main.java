@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Vista.V_Main;
@@ -9,10 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_Main implements ActionListener {
     
     private V_Main vMain = null;
@@ -55,6 +47,9 @@ public class C_Main implements ActionListener {
             case "registrarProveedor" -> {
                 new C_RegistrarProveedor(this.vMain);
             }
+            case "consultarEditarProveedor" -> {
+                new C_ConsultarEditarProveedor(this.vMain);
+            }
             default -> throw new AssertionError();
         }
     }
@@ -80,5 +75,8 @@ public class C_Main implements ActionListener {
         
         this.vMain.menuRegistrarProveedor.setActionCommand("registrarProveedor");
         this.vMain.menuRegistrarProveedor.addActionListener(this);
+        
+        this.vMain.menuConsultarEditarProveedor.setActionCommand("consultarEditarProveedor");
+        this.vMain.menuConsultarEditarProveedor.addActionListener(this);
     }
 }

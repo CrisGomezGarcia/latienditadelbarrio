@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
 import Modelo.DAO.DAO_Categoria;
@@ -25,10 +21,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Cristian Gomez
- */
 public class C_JDialog_EditarProducto {
 
     private final V_JDialog_EditarProducto dlg;
@@ -184,7 +176,7 @@ public class C_JDialog_EditarProducto {
                 }
             }
         });
-        
+
         dlg.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -282,7 +274,7 @@ public class C_JDialog_EditarProducto {
             dlg.txtPrecioSugerido.requestFocusInWindow();
             return;
         }
-        
+
         // Llenar el VO para pasar los datos
         productoSeleccionado.setNombre(nombre);
         productoSeleccionado.setIdMarca(marca.getId());
