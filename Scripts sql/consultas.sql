@@ -7,7 +7,7 @@ SELECT * FROM tbl_categorias;
 
 SELECT id, nombre, descripcion, estado FROM tbl_marcas;
 
-select * from tbl_proveedores t ;
+SELECT id, nombre FROM tbl_proveedores;
 
 SELECT id, nombre, rfc, telefono, correo, direccion, estado FROM tbl_proveedores;
 

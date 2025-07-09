@@ -47,15 +47,15 @@ public class V_Main extends javax.swing.JFrame {
         jMenu8 = new javax.swing.JMenu();
         menuRegistrarProveedor = new javax.swing.JMenuItem();
         menuConsultarEditarProveedor = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuRegistrarCompra = new javax.swing.JMenuItem();
         menuConsultarCompras = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         menuNuevaVenta = new javax.swing.JMenuItem();
         menuConsultarVentas = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -133,16 +133,6 @@ public class V_Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
-        jMenu7.setText("Inventario");
-
-        jMenuItem4.setText("Consultar existencias");
-        jMenu7.add(jMenuItem4);
-
-        jMenuItem5.setText("Ajuste de inventario");
-        jMenu7.add(jMenuItem5);
-
-        jMenuBar1.add(jMenu7);
-
         jMenu2.setText("Compras");
 
         menuRegistrarCompra.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
@@ -164,6 +154,16 @@ public class V_Main extends javax.swing.JFrame {
         jMenu1.add(menuConsultarVentas);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu7.setText("Inventario");
+
+        jMenuItem4.setText("Consultar existencias");
+        jMenu7.add(jMenuItem4);
+
+        jMenuItem5.setText("Ajuste de inventario");
+        jMenu7.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 

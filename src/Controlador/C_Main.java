@@ -50,6 +50,9 @@ public class C_Main implements ActionListener {
             case "consultarEditarProveedor" -> {
                 new C_ConsultarEditarProveedor(this.vMain);
             }
+            case "registrarCompra" -> {
+                new C_RegistrarCompra(this.vMain);
+            }
             default -> throw new AssertionError();
         }
     }
@@ -78,5 +81,8 @@ public class C_Main implements ActionListener {
         
         this.vMain.menuConsultarEditarProveedor.setActionCommand("consultarEditarProveedor");
         this.vMain.menuConsultarEditarProveedor.addActionListener(this);
+        
+        this.vMain.menuRegistrarCompra.setActionCommand("registrarCompra");
+        this.vMain.menuRegistrarCompra.addActionListener(this);
     }
 }

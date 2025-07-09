@@ -58,10 +58,6 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
     private void cargarEstructuraTabla() {
         String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
         };
 
         vRegistrarMarca.tblMarcas.setModel(tableModel);
@@ -91,6 +87,9 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
         vRegistrarMarca.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarMarca.btnCancelar.addActionListener(this);
 
+        vRegistrarMarca.btnEliminar.setActionCommand("btnEliminar");
+        vRegistrarMarca.btnEliminar.addActionListener(this);
+
         // Configurar que ESC cierre el frame
         vRegistrarMarca.getRootPane().getInputMap(
                 javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
@@ -113,17 +112,12 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
         vRegistrarMarca.tblMarcas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int fila = vRegistrarMarca.tblMarcas.getSelectedRow();
-                    int opcion = JOptionPane.showConfirmDialog(vRegistrarMarca,
-                            "¿Deseas eliminar esta marca de la tabla?",
-                            "Confirmar eliminación",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        DefaultTableModel model = (DefaultTableModel) vRegistrarMarca.tblMarcas.getModel();
-                        model.removeRow(fila);
-                    }
+                // 👉 Si selecciona una fila, habilita Eliminar
+                int filaSeleccionada = vRegistrarMarca.tblMarcas.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    vRegistrarMarca.btnEliminar.setEnabled(true);
+                } else {
+                    vRegistrarMarca.btnEliminar.setEnabled(false);
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar
@@ -157,6 +151,9 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             }
             case "btnGuardar" -> {
                 this.guardar();
+            }
+            case "btnEliminar" -> {
+                this.eliminarRegistroSeleccionadoTabla();
             }
             default ->
                 throw new AssertionError();
@@ -272,6 +269,7 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
                 DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 vRegistrarMarca.btnGuardar.setEnabled(false);
+                vRegistrarMarca.btnEliminar.setEnabled(false);
 
             } else {
                 JOptionPane.showMessageDialog(vRegistrarMarca,
@@ -288,5 +286,22 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
             );
         }
         vRegistrarMarca.txtNombre.requestFocusInWindow();
+    }
+
+    private void eliminarRegistroSeleccionadoTabla() {
+        int fila = vRegistrarMarca.tblMarcas.getSelectedRow();
+        int opcion = JOptionPane.showConfirmDialog(vRegistrarMarca,
+                "¿Deseas eliminar esta categoría de la tabla?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel model = (DefaultTableModel) vRegistrarMarca.tblMarcas.getModel();
+            model.removeRow(fila);
+            vRegistrarMarca.btnEliminar.setEnabled(false);
+            if (model.getRowCount() == 0) {
+                vRegistrarMarca.btnGuardar.setEnabled(false);
+            }
+        }
     }
 }

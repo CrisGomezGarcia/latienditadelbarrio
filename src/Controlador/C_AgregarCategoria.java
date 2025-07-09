@@ -58,10 +58,6 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     private void cargarEstructuraTabla() {
         String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
         };
 
         vAgregarCategoria.tblCategoriasAgregadas.setModel(tableModel);
@@ -91,6 +87,9 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarCategoria.btnCancelar.setActionCommand("btnCancelar");
         vAgregarCategoria.btnCancelar.addActionListener(this);
 
+        vAgregarCategoria.btnEliminar.setActionCommand("btnEliminar");
+        vAgregarCategoria.btnEliminar.addActionListener(this);
+
         // Configurar que ESC cierre el frame
         vAgregarCategoria.getRootPane().getInputMap(
                 javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
@@ -113,17 +112,12 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         vAgregarCategoria.tblCategoriasAgregadas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int fila = vAgregarCategoria.tblCategoriasAgregadas.getSelectedRow();
-                    int opcion = JOptionPane.showConfirmDialog(vAgregarCategoria,
-                            "¿Deseas eliminar esta categoría de la tabla?",
-                            "Confirmar eliminación",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        DefaultTableModel model = (DefaultTableModel) vAgregarCategoria.tblCategoriasAgregadas.getModel();
-                        model.removeRow(fila);
-                    }
+                // 👉 Si selecciona una fila, habilita Eliminar
+                int filaSeleccionada = vAgregarCategoria.tblCategoriasAgregadas.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    vAgregarCategoria.btnEliminar.setEnabled(true);
+                } else {
+                    vAgregarCategoria.btnEliminar.setEnabled(false);
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar
@@ -188,6 +182,9 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             case "btnGuardar" -> {
                 this.guardarCategoria();
             }
+            case "btnEliminar" -> {
+                this.eliminarRegistroSeleccionadoTabla();
+            }
             default ->
                 throw new AssertionError();
         }
@@ -246,7 +243,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
         if (totalFilas == 0) {
             return;
         }
-        
+
         for (int i = 0; i < totalFilas; i++) {
             String nombre = tabla.getValueAt(i, 0).toString();
             String descripcion = tabla.getValueAt(i, 1).toString();
@@ -275,6 +272,7 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                 DefaultTableModel model = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 vAgregarCategoria.btnGuardar.setEnabled(false);
+                vAgregarCategoria.btnEliminar.setEnabled(false);
             } else {
                 JOptionPane.showMessageDialog(
                         vAgregarCategoria,
@@ -292,5 +290,22 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
             );
         }
         vAgregarCategoria.txtNombreCategoria.requestFocusInWindow();
+    }
+
+    private void eliminarRegistroSeleccionadoTabla() {
+        int fila = vAgregarCategoria.tblCategoriasAgregadas.getSelectedRow();
+        int opcion = JOptionPane.showConfirmDialog(vAgregarCategoria,
+                "¿Deseas eliminar esta categoría de la tabla?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel model = (DefaultTableModel) vAgregarCategoria.tblCategoriasAgregadas.getModel();
+            model.removeRow(fila);
+            vAgregarCategoria.btnEliminar.setEnabled(false);
+            if (model.getRowCount() == 0) {
+                vAgregarCategoria.btnGuardar.setEnabled(false);
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ public class VO_Proveedor {
         this.id = id;
         this.nombre = nombre;
     }
-    
+
     public VO_Proveedor(String nombre, String rfc, String telefono, String correo, String direccion) {
         this.nombre = nombre;
         this.rfc = rfc;
@@ -91,5 +91,10 @@ public class VO_Proveedor {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

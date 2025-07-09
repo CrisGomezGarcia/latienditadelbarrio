@@ -52,6 +52,25 @@ CREATE TABLE tbl_proveedores (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE tbl_compras (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_proveedor INT NOT NULL,
+  fecha_compra DATETIME DEFAULT CURRENT_TIMESTAMP,
+  total DECIMAL(10,2) NOT NULL,
+  estado TINYINT DEFAULT 1,
+  FOREIGN KEY (id_proveedor) REFERENCES tbl_proveedores(id)
+);
+
+CREATE TABLE tbl_detalle_compras (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_compra INT NOT NULL,
+  id_producto INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio_compra DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_compra) REFERENCES tbl_compras(id),
+  FOREIGN KEY (id_producto) REFERENCES tbl_productos(id)
+);
+
 -- Vistas
 
 CREATE VIEW vw_productos_detalle AS
