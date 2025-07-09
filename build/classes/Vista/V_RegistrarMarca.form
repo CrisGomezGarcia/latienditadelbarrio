@@ -260,7 +260,7 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;strong&gt;NOTA:&lt;/strong&gt; Para editar una marca, de doble clic en la celda a editar.&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;strong&gt;NOTA:&lt;/strong&gt; De doble clic sobre una fila para editar el registro.&lt;/html&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnEliminar">

@@ -334,7 +334,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;strong&gt;NOTA:&lt;/strong&gt; para editar un proveedor, de doble clic en la celda a editar.&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;strong&gt;NOTA:&lt;/strong&gt; De doble clic sobre una fila para editar el registro&lt;/html&gt;"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">

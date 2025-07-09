@@ -28,6 +28,12 @@ public class VO_Categoria {
         this.estado = estado;
     }
 
+    public VO_Categoria(int id, String nombre, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+    
     public VO_Categoria(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;

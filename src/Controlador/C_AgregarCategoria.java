@@ -4,6 +4,7 @@ import Modelo.DAO.DAO_Categoria;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Categoria;
 import Vista.V_AgregarCategoria;
+import Vista.V_JDialog_EditarCategoria;
 import Vista.V_Main;
 import java.sql.Connection;
 import java.awt.Dimension;
@@ -58,6 +59,10 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
     private void cargarEstructuraTabla() {
         String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         vAgregarCategoria.tblCategoriasAgregadas.setModel(tableModel);
@@ -118,6 +123,26 @@ public class C_AgregarCategoria implements InternalFrameListener, ActionListener
                     vAgregarCategoria.btnEliminar.setEnabled(true);
                 } else {
                     vAgregarCategoria.btnEliminar.setEnabled(false);
+                }
+                
+                if (e.getClickCount() == 2) {
+                    if (filaSeleccionada >= 0) {
+                        int modelRow = vAgregarCategoria.tblCategoriasAgregadas.convertRowIndexToModel(filaSeleccionada);
+                        
+                        String nombre = (String) vAgregarCategoria.tblCategoriasAgregadas.getValueAt(filaSeleccionada, 0);
+                        String descripcion = (String) vAgregarCategoria.tblCategoriasAgregadas.getValueAt(filaSeleccionada, 0);
+
+                        VO_Categoria categoriaSeleccionada = new VO_Categoria(0, nombre, descripcion);
+                        V_JDialog_EditarCategoria dlg = new V_JDialog_EditarCategoria(vMain, true);
+                        C_JDialog_EditarCategoria cDlg = new C_JDialog_EditarCategoria(dlg, categoriaSeleccionada, null);
+                        dlg.setVisible(true);
+                        
+                        if (cDlg.estaActualizado()) {
+                            VO_Categoria categoriaSeleccionadaEditada = cDlg.getCategoriaEditada();
+                            vAgregarCategoria.tblCategoriasAgregadas.setValueAt(categoriaSeleccionadaEditada.getNombre(), modelRow, 0);
+                            vAgregarCategoria.tblCategoriasAgregadas.setValueAt(categoriaSeleccionadaEditada.getDescripcion(), modelRow, 1);
+                        }
+                    }
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar

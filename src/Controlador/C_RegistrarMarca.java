@@ -3,6 +3,7 @@ package Controlador;
 import Modelo.DAO.DAO_Marca;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Marca;
+import Vista.V_JDialog_EditarMarca;
 import Vista.V_RegistrarMarca;
 import Vista.V_Main;
 import java.sql.Connection;
@@ -58,6 +59,10 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
     private void cargarEstructuraTabla() {
         String[] columnas = {"Nombre", "Descripción"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         vRegistrarMarca.tblMarcas.setModel(tableModel);
@@ -118,6 +123,26 @@ public class C_RegistrarMarca implements InternalFrameListener, ActionListener {
                     vRegistrarMarca.btnEliminar.setEnabled(true);
                 } else {
                     vRegistrarMarca.btnEliminar.setEnabled(false);
+                }
+
+                if (e.getClickCount() == 2) {
+                    if (filaSeleccionada >= 0) {
+                        int modelRow = vRegistrarMarca.tblMarcas.convertRowIndexToModel(filaSeleccionada);
+
+                        String nombre = (String) vRegistrarMarca.tblMarcas.getValueAt(filaSeleccionada, 0);
+                        String descripcion = (String) vRegistrarMarca.tblMarcas.getValueAt(filaSeleccionada, 1);
+
+                        VO_Marca marcaSeleccionada = new VO_Marca(0, nombre, descripcion);
+                        V_JDialog_EditarMarca dlg = new V_JDialog_EditarMarca(vMain, true);
+                        C_JDialog_EditarMarca cDlg = new C_JDialog_EditarMarca(dlg, marcaSeleccionada, null);
+                        dlg.setVisible(true);
+
+                        if (cDlg.estaActualizado()) {
+                            VO_Marca marcaSeleccionadaEditada = cDlg.getMarcaEditada();
+                            vRegistrarMarca.tblMarcas.setValueAt(marcaSeleccionadaEditada.getNombre(), modelRow, 0);
+                            vRegistrarMarca.tblMarcas.setValueAt(marcaSeleccionadaEditada.getDescripcion(), modelRow, 1);
+                        }
+                    }
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar

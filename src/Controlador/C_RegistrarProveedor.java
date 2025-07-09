@@ -3,7 +3,7 @@ package Controlador;
 import Modelo.DAO.DAO_Proveedor;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Proveedor;
-import Vista.Componentes.NumeroCellEditor;
+import Vista.V_JDialog_EditarProveedor;
 import Vista.V_Main;
 import Vista.V_RegistrarProveedor;
 import java.sql.Connection;
@@ -59,6 +59,10 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
     private void cargarEstructuraTabla() {
         String[] columnas = {"RFC", "Nombre", "Teléfono", "Correo electrónico", "Dirección"};
         DefaultTableModel tableModel = new DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         vRegistrarProveedor.tblProveedores.setModel(tableModel);
@@ -78,7 +82,6 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(2).setMaxWidth(150);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(2).setMinWidth(150);
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(2).setResizable(false);
-        vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(2).setCellEditor(new NumeroCellEditor(10));
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
 
         vRegistrarProveedor.tblProveedores.getColumnModel().getColumn(3).setMaxWidth(250);
@@ -103,6 +106,33 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
                     vRegistrarProveedor.btnEliminar.setEnabled(true);
                 } else {
                     vRegistrarProveedor.btnEliminar.setEnabled(false);
+                }
+
+                if (e.getClickCount() == 2) {
+                    if (filaSeleccionada >= 0) {
+                        int modelRow = vRegistrarProveedor.tblProveedores.convertRowIndexToModel(filaSeleccionada);
+
+                        String rfc = (String) vRegistrarProveedor.tblProveedores.getValueAt(filaSeleccionada, 0);
+                        String nombre = (String) vRegistrarProveedor.tblProveedores.getValueAt(filaSeleccionada, 1);
+                        String telefono = (String) vRegistrarProveedor.tblProveedores.getValueAt(filaSeleccionada, 2);
+                        String correo = (String) vRegistrarProveedor.tblProveedores.getValueAt(filaSeleccionada, 3);
+                        String direccion = (String) vRegistrarProveedor.tblProveedores.getValueAt(filaSeleccionada, 4);
+
+                        VO_Proveedor proveedorSeleccionado = new VO_Proveedor(0, nombre, rfc, telefono, correo, direccion);
+                        V_JDialog_EditarProveedor dlg = new V_JDialog_EditarProveedor(vMain, true);
+                        C_JDialog_EditarProveedor cDlg = new C_JDialog_EditarProveedor(dlg, proveedorSeleccionado, null);
+                        dlg.setVisible(true);
+
+                        if (cDlg.estaActualizado()) {
+                            VO_Proveedor proveedorSeleccionadoEditado = cDlg.getProveedorEditado();
+                            vRegistrarProveedor.tblProveedores.setValueAt(proveedorSeleccionadoEditado.getRfc(), modelRow, 0);
+                            vRegistrarProveedor.tblProveedores.setValueAt(proveedorSeleccionadoEditado.getNombre(), modelRow, 1);
+                            vRegistrarProveedor.tblProveedores.setValueAt(proveedorSeleccionadoEditado.getTelefono(), modelRow, 2);
+                            vRegistrarProveedor.tblProveedores.setValueAt(proveedorSeleccionadoEditado.getCorreo(), modelRow, 3);
+                            vRegistrarProveedor.tblProveedores.setValueAt(proveedorSeleccionadoEditado.getDireccion(), modelRow, 4);
+                        }
+
+                    }
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar
@@ -143,21 +173,6 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
                 }
             }
         });
-        
-        vRegistrarProveedor.btnGuardar.addActionListener(e -> {
-            if (vRegistrarProveedor.tblProveedores.isEditing()) {
-                vRegistrarProveedor.tblProveedores.getCellEditor().stopCellEditing();
-            }
-            guardar();
-        });
-        
-        vRegistrarProveedor.btnEliminar.addActionListener(e -> {
-            if (vRegistrarProveedor.tblProveedores.isEditing()) {
-                vRegistrarProveedor.tblProveedores.getCellEditor().stopCellEditing();
-            }
-            eliminarRegistroSeleccionadoTabla();
-        });
-
     }
 
     private void setActionsListenerAFormulario() {
@@ -171,15 +186,14 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
         vRegistrarProveedor.btnLimpiarCampos.addActionListener(this);
 
         vRegistrarProveedor.btnGuardar.setEnabled(false);
-//        vRegistrarProveedor.btnGuardar.setActionCommand("btnGuardar");
-//        vRegistrarProveedor.btnGuardar.addActionListener(this);
+        vRegistrarProveedor.btnGuardar.setActionCommand("btnGuardar");
+        vRegistrarProveedor.btnGuardar.addActionListener(this);
 
         vRegistrarProveedor.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarProveedor.btnCancelar.addActionListener(this);
 
-//        vRegistrarProveedor.btnEliminar.setActionCommand("btnEliminar");
-//        vRegistrarProveedor.btnEliminar.addActionListener(this);
-
+        vRegistrarProveedor.btnEliminar.setActionCommand("btnEliminar");
+        vRegistrarProveedor.btnEliminar.addActionListener(this);
         // Configurar que ESC cierre el frame
         vRegistrarProveedor.getRootPane().getInputMap(
                 javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
@@ -211,12 +225,12 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
             case "btnCancelar" -> {
                 this.cancelarPantalla();
             }
-//            case "btnGuardar" -> {
-//                this.guardar();
-//            }
-//            case "btnEliminar" -> {
-//                this.eliminarRegistroSeleccionadoTabla();
-//            }
+            case "btnGuardar" -> {
+                this.guardar();
+            }
+            case "btnEliminar" -> {
+                this.eliminarRegistroSeleccionadoTabla();
+            }
             default ->
                 throw new AssertionError();
         }
@@ -361,7 +375,7 @@ public class C_RegistrarProveedor implements ActionListener, InternalFrameListen
     private void eliminarRegistroSeleccionadoTabla() {
         int fila = vRegistrarProveedor.tblProveedores.getSelectedRow();
         int opcion = JOptionPane.showConfirmDialog(vRegistrarProveedor,
-                "¿Deseas eliminar esta categoría de la tabla?",
+                "¿Deseas eliminar este proveedor de la tabla?",
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
 

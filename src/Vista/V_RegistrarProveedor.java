@@ -162,7 +162,7 @@ public class V_RegistrarProveedor extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de proveedores agregados"));
 
-        jLabel8.setText("<html><strong>NOTA:</strong> para editar un proveedor, de doble clic en la celda a editar.</html>");
+        jLabel8.setText("<html><strong>NOTA:</strong> De doble clic sobre una fila para editar el registro</html>");
 
         tblProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -27,6 +27,15 @@ public class VO_Proveedor {
         this.direccion = direccion;
     }
 
+    public VO_Proveedor(int id, String nombre, String rfc, String telefono, String correo, String direccion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.rfc = rfc;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.direccion = direccion;
+    }
+
     public VO_Proveedor(int id, String nombre, String rfc, String telefono, String correo, String direccion, int estado) {
         this.id = id;
         this.nombre = nombre;

@@ -12,15 +12,35 @@ public class C_JDialog_EditarProveedor {
     private final V_JDialog_EditarProveedor dlg;
     private final VO_Proveedor proveedorSeleccionado;
     private final DAO_Proveedor dao;
+    private boolean actualizado = false;
 
     public C_JDialog_EditarProveedor(V_JDialog_EditarProveedor dlg, VO_Proveedor proveedorSeleccionado, Connection con) {
         this.dlg = dlg;
         this.proveedorSeleccionado = proveedorSeleccionado;
         this.dao = new DAO_Proveedor(con);
+        listenersGenerales();
+        if (this.proveedorSeleccionado.getId() == 0 && con == null) {
+            cargarDatosEditarDesdeCrear();
+            setListenersDesdeCrear();
+        } else {
+            cargarDatosEnDialog();
+            setListeners();
+        }
 
-        cargarDatosEnDialog();
-        setListeners();
+    }
 
+    private void listenersGenerales() {
+        dlg.txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '\b') {
+                    evt.consume();
+                }
+            }
+        });
     }
 
     private void cargarDatosEnDialog() {
@@ -81,7 +101,7 @@ public class C_JDialog_EditarProveedor {
         proveedorSeleccionado.setCorreo(correo);
         proveedorSeleccionado.setDireccion(direccion);
         proveedorSeleccionado.setEstado(activo);
-        
+
         // Guardar en BD
         if (dao.actualizar(proveedorSeleccionado)) {
             JOptionPane.showMessageDialog(dlg, "Proveedor actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -89,6 +109,46 @@ public class C_JDialog_EditarProveedor {
         } else {
             JOptionPane.showMessageDialog(dlg, "Error al actualizar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void cargarDatosEditarDesdeCrear() {
+        dlg.panelEstado.setVisible(false);
+        dlg.txtNombre.setText(proveedorSeleccionado.getNombre());
+        dlg.txtRFC.setText(proveedorSeleccionado.getRfc());
+        dlg.txtTelefono.setText(proveedorSeleccionado.getTelefono());
+        dlg.txtCorreo.setText(proveedorSeleccionado.getCorreo());
+        dlg.txtDireccion.setText(proveedorSeleccionado.getDireccion());
+    }
+
+    private void setListenersDesdeCrear() {
+        dlg.setTitle("Proveedores | Editar Proveedor");
+        dlg.btnGuardar.setText("Actualizar");
+
+        dlg.btnGuardar.addActionListener((ActionEvent e) -> {
+            actualizarDesdeCrear();
+        });
+
+        dlg.btnCancelar.addActionListener((ActionEvent e) -> {
+            dlg.dispose();
+        });
+    }
+
+    private void actualizarDesdeCrear() {
+        proveedorSeleccionado.setRfc(dlg.txtRFC.getText());
+        proveedorSeleccionado.setNombre(dlg.txtNombre.getText());
+        proveedorSeleccionado.setTelefono(dlg.txtTelefono.getText());
+        proveedorSeleccionado.setCorreo(dlg.txtCorreo.getText());
+        proveedorSeleccionado.setDireccion(dlg.txtDireccion.getText());
+        actualizado = true;
+        dlg.dispose();
+    }
+
+    public boolean estaActualizado() {
+        return actualizado;
+    }
+
+    public VO_Proveedor getProveedorEditado() {
+        return proveedorSeleccionado;
     }
 
 }

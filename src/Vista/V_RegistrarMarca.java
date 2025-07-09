@@ -125,7 +125,7 @@ public class V_RegistrarMarca extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tblMarcas);
 
-        jLabel5.setText("<html><strong>NOTA:</strong> Para editar una marca, de doble clic en la celda a editar.</html>");
+        jLabel5.setText("<html><strong>NOTA:</strong> De doble clic sobre una fila para editar el registro.</html>");
 
         btnEliminar.setText("Eliminar");
         btnEliminar.setEnabled(false);
