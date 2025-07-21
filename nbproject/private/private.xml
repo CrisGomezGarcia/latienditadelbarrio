@@ -4,11 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_RegistrarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Modelo/VO/VO_Marca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_JDialog_EditarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Vista/V_JDialog_EditarMarca.java</file>
             <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Vista/V_RegistrarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_ConsultarEditarMarca.java</file>
+            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_ConsultarEditarProducto.java</file>
+            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_JDialog_EditarMarca.java</file>
+            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Modelo/VO/VO_Producto.java</file>
+            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_JDialog_EditarProducto.java</file>
+            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_RegistrarProducto.java</file>
         </group>
     </open-files>
 </project-private>

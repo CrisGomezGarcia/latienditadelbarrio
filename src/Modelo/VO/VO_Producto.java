@@ -32,6 +32,17 @@ public class VO_Producto {
         this.estado = estado;
         this.createdAt = createdAt;
     }
+    
+    public VO_Producto(int id, String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipoPresentacion = tipoPresentacion;
+        this.codigoBarras = codigoBarras;
+        this.precioSugerido = precioSugerido;
+        this.stock = stock;
+        this.idCategoria = idCategoria;
+        this.idMarca = idMarca;
+    }
 
     // 👉 Constructor simplificado (sin ID y fecha)
     public VO_Producto(String nombre, String tipoPresentacion, String codigoBarras, double precioSugerido, int stock, int idCategoria, int idMarca) {

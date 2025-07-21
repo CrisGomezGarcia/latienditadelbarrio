@@ -26,6 +26,7 @@ public class C_JDialog_EditarProducto {
     private final V_JDialog_EditarProducto dlg;
     private final VO_Producto productoSeleccionado;
     private final DAO_Producto dao;
+    private boolean actualizado = false;
 
     public C_JDialog_EditarProducto(V_JDialog_EditarProducto dlg, VO_Producto productoSeleccionado, Connection con) {
         this.dlg = dlg;
@@ -33,8 +34,14 @@ public class C_JDialog_EditarProducto {
         this.dao = new DAO_Producto(con);
         this.cargarMarcasCombo();
         this.cargarCategoriasCombo();
-        cargarDatosProductoEnDialog();
-        setListeners();
+        if (productoSeleccionado.getId() == 0) {
+            cargarDatosEditarDesdeCrear();
+            setListenersDesdeCrear();
+        } else {
+            cargarDatosProductoEnDialog();
+            setListeners();
+        }
+        listenersGenerales();
     }
 
     private void cargarMarcasCombo() {
@@ -151,59 +158,6 @@ public class C_JDialog_EditarProducto {
         dlg.btnGuardar.addActionListener((ActionEvent e) -> {
             guardarCambios();
         });
-
-        dlg.btnCancelar.addActionListener((ActionEvent e) -> {
-            dlg.dispose();
-        });
-
-        dlg.txtPrecioSugerido.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                String texto = dlg.txtPrecioSugerido.getText().trim();
-                if (texto.isEmpty()) {
-                    dlg.txtPrecioSugerido.setText("0");
-                }
-            }
-        });
-
-        // Este hace que cuando el campo pierda el foco siempre se coloque un 0 para eviatar un error al convertir a double o int
-        dlg.txtExistencia.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                String texto = dlg.txtExistencia.getText().trim();
-                if (texto.isEmpty()) {
-                    dlg.txtExistencia.setText("0");
-                }
-            }
-        });
-
-        dlg.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                char c = evt.getKeyChar();
-
-                // Permitir solo digitos, backspace y punto
-                if (!Character.isDigit(c) && c != '.' && c != '\b') {
-                    evt.consume();
-                }
-
-                if (c == '.' && dlg.txtPrecioSugerido.getText().contains(".")) {
-                    evt.consume();
-                }
-            }
-        });
-
-        dlg.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                char c = evt.getKeyChar();
-
-                // Permitir solo digitos, backspace y punto
-                if (!Character.isDigit(c) && c != '\b') {
-                    evt.consume();
-                }
-            }
-        });
     }
 
     private void guardarCambios() {
@@ -291,5 +245,114 @@ public class C_JDialog_EditarProducto {
         } else {
             JOptionPane.showMessageDialog(dlg, "Error al actualizar la marca.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void cargarDatosEditarDesdeCrear() {
+        dlg.panelEstado.setVisible(false);
+
+        dlg.txtNombre.setText(productoSeleccionado.getNombre());
+        dlg.txtPresentacion.setText(productoSeleccionado.getTipoPresentacion());
+        dlg.txtCodigoBarras.setText(productoSeleccionado.getCodigoBarras());
+        dlg.txtPrecioSugerido.setText(String.valueOf(productoSeleccionado.getPrecioSugerido()));
+        dlg.txtExistencia.setText(String.valueOf(productoSeleccionado.getStock()));
+
+        // 👉 Seleccionar la categoría correcta
+        ComboBoxModel<VO_Categoria> modeloCat = dlg.cboCategorias.getModel();
+        for (int i = 0; i < modeloCat.getSize(); i++) {
+            VO_Categoria cat = modeloCat.getElementAt(i);
+            if (cat.getId() == productoSeleccionado.getIdCategoria()) {
+                dlg.cboCategorias.setSelectedIndex(i);
+                break;
+            }
+        }
+
+        // 👉 Seleccionar la marca correcta
+        ComboBoxModel<VO_Marca> modeloMar = dlg.cboMarcas.getModel();
+        for (int i = 0; i < modeloMar.getSize(); i++) {
+            VO_Marca mar = modeloMar.getElementAt(i);
+            if (mar.getId() == productoSeleccionado.getIdMarca()) {
+                dlg.cboMarcas.setSelectedIndex(i);
+                break;
+            }
+        }
+
+    }
+
+    private void setListenersDesdeCrear() {
+        dlg.setTitle("Productos | Editar producto");
+        dlg.btnGuardar.setText("Actualizar");
+
+        dlg.btnGuardar.addActionListener((ActionEvent e) -> {
+            actualizarDesdeCrear();
+        });
+
+    }
+
+    private void actualizarDesdeCrear() {
+        productoSeleccionado.setNombre(dlg.txtNombre.getText());
+        actualizado = true;
+    }
+
+    public boolean estaActualizado() {
+        return actualizado;
+    }
+
+    public VO_Producto getProductoEditado() {
+        return this.productoSeleccionado;
+    }
+
+    private void listenersGenerales() {
+        dlg.btnCancelar.addActionListener((ActionEvent e) -> {
+            dlg.dispose();
+        });
+
+        dlg.txtPrecioSugerido.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = dlg.txtPrecioSugerido.getText().trim();
+                if (texto.isEmpty()) {
+                    dlg.txtPrecioSugerido.setText("0");
+                }
+            }
+        });
+
+        // Este hace que cuando el campo pierda el foco siempre se coloque un 0 para eviatar un error al convertir a double o int
+        dlg.txtExistencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                String texto = dlg.txtExistencia.getText().trim();
+                if (texto.isEmpty()) {
+                    dlg.txtExistencia.setText("0");
+                }
+            }
+        });
+
+        dlg.txtPrecioSugerido.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '.' && c != '\b') {
+                    evt.consume();
+                }
+
+                if (c == '.' && dlg.txtPrecioSugerido.getText().contains(".")) {
+                    evt.consume();
+                }
+            }
+        });
+
+        dlg.txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+
+                // Permitir solo digitos, backspace y punto
+                if (!Character.isDigit(c) && c != '\b') {
+                    evt.consume();
+                }
+            }
+        });
     }
 }

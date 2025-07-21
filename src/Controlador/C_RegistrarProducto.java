@@ -7,6 +7,7 @@ import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Categoria;
 import Modelo.VO.VO_Marca;
 import Modelo.VO.VO_Producto;
+import Vista.V_JDialog_EditarProducto;
 import Vista.V_Main;
 import Vista.V_RegistrarProducto;
 import ca.odell.glazedlists.BasicEventList;
@@ -90,10 +91,24 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
 
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setMaxWidth(250);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setMinWidth(250);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
 
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setMaxWidth(150);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setMinWidth(150);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(5).setCellRenderer(tableCellRenderer);
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMaxWidth(180);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setMinWidth(180);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(6).setCellRenderer(tableCellRenderer);
+
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(7).setMaxWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(7).setMinWidth(100);
+        vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(7).setResizable(false);
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(7).setCellRenderer(tableCellRenderer);
 
         vRegistrarProducto.tblProductosAgregados.getColumnModel().getColumn(8).setMaxWidth(65);
@@ -122,6 +137,9 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
 
         vRegistrarProducto.btnCancelar.setActionCommand("btnCancelar");
         vRegistrarProducto.btnCancelar.addActionListener(this);
+
+        vRegistrarProducto.btnEliminar.setActionCommand("btnEliminar");
+        vRegistrarProducto.btnEliminar.addActionListener(this);
 
         // Configurar que ESC cierre el frame
         vRegistrarProducto.getRootPane().getInputMap(
@@ -172,17 +190,64 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
         vRegistrarProducto.tblProductosAgregados.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int fila = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
-                    int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
-                            "¿Deseas eliminar este producto de la tabla?",
-                            "Confirmar eliminación",
-                            JOptionPane.YES_NO_OPTION);
+                int filaSeleccionada = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    vRegistrarProducto.btnEliminar.setEnabled(true);
+                } else {
+                    vRegistrarProducto.btnEliminar.setEnabled(false);
+                }
 
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
-                        model.removeRow(fila);
+                if (e.getClickCount() == 2) {
+                    if (filaSeleccionada >= 0) {
+                        DefaultTableModel tableModel = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
+
+                        int modelRow = vRegistrarProducto.tblProductosAgregados.convertRowIndexToModel(filaSeleccionada);
+
+                        String nombre = (String) tableModel.getValueAt(filaSeleccionada, 0);
+                        int marcaId = (int) tableModel.getValueAt(filaSeleccionada, 1);
+                        String presentacion = (String) tableModel.getValueAt(filaSeleccionada, 3);
+                        int categoriaId = (int) tableModel.getValueAt(filaSeleccionada, 4);
+                        String codigoBarras = (String) tableModel.getValueAt(filaSeleccionada, 6);
+                        float precioSugerido = (float) tableModel.getValueAt(filaSeleccionada, 7);
+                        int existencia = (int) tableModel.getValueAt(filaSeleccionada, 8);
+
+                        try (Connection con = M_ConexionBD.getConexion()) {
+                            VO_Producto productoSeleccionado = new VO_Producto(0, nombre, presentacion, codigoBarras, precioSugerido, existencia, categoriaId, marcaId);
+                            V_JDialog_EditarProducto dlg = new V_JDialog_EditarProducto(vMain, true);
+                            C_JDialog_EditarProducto cDlg = new C_JDialog_EditarProducto(dlg, productoSeleccionado, con);
+                            dlg.setVisible(true);
+                            
+                            if (cDlg.estaActualizado()) {
+                                VO_Producto productoSeleccionadoEditado = cDlg.getProductoEditado();
+                                
+                                
+                            }
+                            
+                            
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(vRegistrarProducto,
+                                    "Error obteniendo conexión: " + ex.getMessage(),
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+//                        System.out.println("Nombre => " + nombre);
+//                        System.out.println("Marca id => " + marcaId);
+//                        System.out.println("Presentacion => " + presentacion);
+//                        System.out.println("Categoria id => " + categoriaId);
+//                        System.out.println("Codigo de barras => " + codigoBarras);
+//                        System.out.println("Precio sugerido => " + precioSugerido);
+//                        System.out.println("Existencia => " + existencia);
                     }
+//                    int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
+//                            "¿Deseas eliminar este producto de la tabla?",
+//                            "Confirmar eliminación",
+//                            JOptionPane.YES_NO_OPTION);
+//
+//                    if (opcion == JOptionPane.YES_OPTION) {
+//                        DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
+//                        model.removeRow(filaSeleccionada);
+//                    }
                 }
 
                 // 👉 Si ya no quedan filas, deshabilita Guardar
@@ -221,7 +286,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 }
             }
         });
-        
+
         vRegistrarProducto.txtExistencia.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
@@ -279,6 +344,9 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             }
             case "btnCancelar" -> {
                 this.cancelarPantalla();
+            }
+            case "btnEliminar" -> {
+                this.eliminarRegistroSeleccionadoTabla();
             }
             default ->
                 throw new AssertionError();
@@ -396,7 +464,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
             vRegistrarProducto.cboCategorias.requestFocusInWindow();
             return;
         }
-        
+
         if (marca == null) {
             JOptionPane.showMessageDialog(vRegistrarProducto,
                     "La marca del producto es obligatoria.",
@@ -491,6 +559,7 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                 // 👉 Limpiar tabla y deshabilitar Guardar
                 tabla.setRowCount(0);
                 vRegistrarProducto.btnGuardar.setEnabled(false);
+                vRegistrarProducto.btnEliminar.setEnabled(false);
                 vRegistrarProducto.txtNombre.requestFocusInWindow();
             } else {
                 JOptionPane.showMessageDialog(vRegistrarProducto,
@@ -505,6 +574,23 @@ public class C_RegistrarProducto implements InternalFrameListener, ActionListene
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
+        }
+    }
+
+    private void eliminarRegistroSeleccionadoTabla() {
+        int filaSeleccionada = vRegistrarProducto.tblProductosAgregados.getSelectedRow();
+        int opcion = JOptionPane.showConfirmDialog(vRegistrarProducto,
+                "¿Deseas eliminar este producto de la tabla?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel model = (DefaultTableModel) vRegistrarProducto.tblProductosAgregados.getModel();
+            model.removeRow(filaSeleccionada);
+            vRegistrarProducto.btnEliminar.setEnabled(false);
+            if (model.getRowCount() == 0) {
+                vRegistrarProducto.btnGuardar.setEnabled(false);
+            }
         }
     }
 
