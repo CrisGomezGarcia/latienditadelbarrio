@@ -3,13 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_RegistrarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Vista/V_RegistrarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_ConsultarEditarProducto.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_JDialog_EditarMarca.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Modelo/VO/VO_Producto.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_JDialog_EditarProducto.java</file>
-            <file>file:/C:/Users/Cristian%20Gomez/Documents/NetBeansProjects/pos_la_tiendita_del_barrio/src/Controlador/C_RegistrarProducto.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Controlador/C_RegistrarCompra.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Vista/V_JDialog_AgregarProductoACompra.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Vista/V_ConsultarEditarProducto.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Controlador/C_JDialog_EditarCategoria.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Controlador/C_Main.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Controlador/C_ConsultarEditarProveedor.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Vista/V_JDialog_EditarCategoria.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Vista/V_ConsultarEditarMarca.java</file>
+            <file>file:/C:/Users/gomez/OneDrive/Documentos/la%20tiendita%20del%20barrio/latienditadelbarrio/src/Vista/V_RegistrarProducto.java</file>
         </group>
     </open-files>
 </project-private>

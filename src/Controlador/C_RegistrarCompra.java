@@ -3,6 +3,7 @@ package Controlador;
 import Modelo.DAO.DAO_Proveedor;
 import Modelo.M_ConexionBD;
 import Modelo.VO.VO_Proveedor;
+import Vista.V_JDialog_AgregarProductoACompra;
 import Vista.V_Main;
 import Vista.V_RegistrarCompra;
 import ca.odell.glazedlists.BasicEventList;
@@ -60,7 +61,7 @@ public class C_RegistrarCompra implements ActionListener, InternalFrameListener 
         JTextField dateField = ((JTextField) vRegistrarCompra.jdChooserFechaCompra.getDateEditor().getUiComponent());
         dateField.setEditable(false);
         dateField.setFocusable(false);
-        vRegistrarCompra.jdChooserFechaCompra.setDateFormatString("dd/MM/yyyy");
+        vRegistrarCompra.jdChooserFechaCompra.setDateFormatString("yyyy/MM/dd");
 //        vRegistrarCompra.btnGuardar.setEnabled(false);
         vRegistrarCompra.toFront();
         vRegistrarCompra.show();
@@ -105,10 +106,21 @@ public class C_RegistrarCompra implements ActionListener, InternalFrameListener 
 
     private void setActionsListenerAFormulario() {
         vRegistrarCompra.addInternalFrameListener(this);
+        vRegistrarCompra.btnAgregarProducto.setActionCommand("btnAgregarProducto");
+        vRegistrarCompra.btnAgregarProducto.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String clickName = e.getActionCommand();
+        switch (clickName) {
+            case "btnAgregarProducto" -> {
+                V_JDialog_AgregarProductoACompra dialog = new V_JDialog_AgregarProductoACompra(vMain, true);
+                new C_JDialog_AgregarProductoACompra(dialog);
+                dialog.setVisible(true);
+            }
+            default -> throw new AssertionError();
+        }
     }
 
     @Override
